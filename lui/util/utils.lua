@@ -3,7 +3,6 @@ local utils = {}
 -- Enums
 
 utils.DrawMode = { Outline = 1, Fill = 2, FillOutline = 3 }
-utils.LayoutMode = { NotSet = 0, Grid = 1 }
 utils.HAlign = { Left = 1, Center = 2, Right = 3 }
 utils.VAlign = { Top = 1, Center = 2, Bottom = 3 }
 utils.FitMode = { Fit = 1, Expand = 2 }
