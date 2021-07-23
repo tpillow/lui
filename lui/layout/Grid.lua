@@ -27,13 +27,13 @@ function Grid:widgetUpdate(dt)
 end
 
 function Grid:widgetDraw()
-    self:drawDebugBounds()
-
     for _, row in ipairs(self.gridRows) do
         for _, col in ipairs(row.cols) do
-            col.content:widgetDraw()
+            col.content:draw()
         end
     end
+    
+    self:drawDebugBounds()
 end
 
 function Grid:widgetSetDesires()
@@ -86,18 +86,19 @@ end
 
 -- Grid col
 
-function Grid:col()
+function Grid:col(content)
     assert(#self.gridRows > 0)
 
     self.gridColStarted = true
     table.insert(self:getCurGridRow().cols, {
         width = "auto",
-        content = Pane:new(),
+        content = nil,
         hAlign = utils.HAlign.Left,
         vAlign = utils.VAlign.Top,
         hFitMode = utils.FitMode.Fit,
         vFitMode = utils.FitMode.Fit,
     })
+    self:colContent(content or Pane:new())
 
     return self
 end

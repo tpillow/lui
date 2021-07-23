@@ -12,10 +12,10 @@ function Pane:init()
     self.width = 20
     self.height = 20
 
-    self.marginLeft = 5
-    self.marginRight = 5
-    self.marginTop = 5
-    self.marginBottom = 5
+    self.marginLeft = 0
+    self.marginRight = 0
+    self.marginTop = 0
+    self.marginBottom = 0
 end
 
 -- Basic updates
@@ -29,29 +29,11 @@ end
 function Pane:draw()
     love.graphics.push()
         -- Move to proper position (including margin)
-        local fx, fy, _, _ = self:getFullBounds()
-        love.graphics.translate(fx + self.marginLeft, fy + self.marginTop)
+        love.graphics.translate(self.x + self.marginLeft, self.y + self.marginTop)
 
         -- Draw layout and widget
         self:widgetDraw()
     love.graphics.pop()
-end
-
--- Debug functions
-
-function Pane:drawDebugBounds()
-    -- Debug draw bounds
-    if luiDebugBounds then
-        local _, _, fw, fh = self:getFullBounds()
-        local oldLineWidth = love.graphics.getLineWidth()
-        love.graphics.setLineWidth(luiDebugLineWidth)
-        love.graphics.setColor(luiDebugColor:unpackRGBA())
-        love.graphics.rectangle("line", -self.marginLeft, -self.marginTop, fw,
-                                fh)
-        love.graphics.setColor(luiMarginDebugColor:unpackRGBA())
-        love.graphics.rectangle("line", 0, 0, self.width, self.height)
-        love.graphics.setLineWidth(oldLineWidth)
-    end
 end
 
 -- Widget functions
@@ -95,11 +77,34 @@ function Pane:setSize(w, h)
 end
 
 function Pane:setMargin(left, top, right, bottom)
-    self.marginLeft = left
-    self.marginTop = top
-    self.marginRight = right
-    self.marginBottom = bottom
+    if top ~= nil and right ~= nil then
+        self.marginLeft = left
+        self.marginTop = top
+        self.marginRight = right
+        self.marginBottom = bottom
+    elseif top ~= nil and right == nil then
+        self:setMargin(left, top, left, top)
+    else
+        self:setMargin(left, left, left, left)
+    end
     return self
+end
+
+-- Debug functions
+
+function Pane:drawDebugBounds()
+    -- Debug draw bounds
+    if luiDebugBounds then
+        local _, _, fw, fh = self:getFullBounds()
+        local oldLineWidth = love.graphics.getLineWidth()
+        love.graphics.setLineWidth(luiDebugLineWidth)
+        love.graphics.setColor(luiMarginDebugColor:unpackRGBA())
+        love.graphics.rectangle("line", 0, 0, self.width, self.height)
+        love.graphics.setColor(luiDebugColor:unpackRGBA())
+        love.graphics.rectangle("line", -self.marginLeft, -self.marginTop, fw,
+                                fh)
+        love.graphics.setLineWidth(oldLineWidth)
+    end
 end
 
 -- Return class
