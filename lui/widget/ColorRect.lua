@@ -12,6 +12,8 @@ function ColorRect:init()
 end
 
 function ColorRect:widgetDraw()
+    self:drawDebugBounds()
+
     if self.drawMode == utils.DrawMode.Fill or self.drawMode == utils.DrawMode.FillOutline then
         love.graphics.setColor(self.fillColor:unpackRGBA())
         love.graphics.rectangle("fill", 0, 0, self.width, self.height)

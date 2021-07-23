@@ -29,30 +29,35 @@ end
 function Pane:draw()
     love.graphics.push()
         -- Move to proper position (including margin)
-        local fx, fy, fw, fh = self:getFullBounds()
+        local fx, fy, _, _ = self:getFullBounds()
         love.graphics.translate(fx + self.marginLeft, fy + self.marginTop)
-
-        -- Debug draw bounds
-        if luiDebugBounds then
-            local oldLineWidth = love.graphics.getLineWidth()
-            love.graphics.setLineWidth(luiDebugLineWidth)
-            love.graphics.setColor(luiDebugColor:unpackRGBA())
-            love.graphics.rectangle("line", -self.marginLeft, -self.marginTop, fw,
-                                    fh)
-            love.graphics.setColor(luiMarginDebugColor:unpackRGBA())
-            love.graphics.rectangle("line", 0, 0, self.width, self.height)
-            love.graphics.setLineWidth(oldLineWidth)
-        end
 
         -- Draw layout and widget
         self:widgetDraw()
     love.graphics.pop()
 end
 
+-- Debug functions
+
+function Pane:drawDebugBounds()
+    -- Debug draw bounds
+    if luiDebugBounds then
+        local _, _, fw, fh = self:getFullBounds()
+        local oldLineWidth = love.graphics.getLineWidth()
+        love.graphics.setLineWidth(luiDebugLineWidth)
+        love.graphics.setColor(luiDebugColor:unpackRGBA())
+        love.graphics.rectangle("line", -self.marginLeft, -self.marginTop, fw,
+                                fh)
+        love.graphics.setColor(luiMarginDebugColor:unpackRGBA())
+        love.graphics.rectangle("line", 0, 0, self.width, self.height)
+        love.graphics.setLineWidth(oldLineWidth)
+    end
+end
+
 -- Widget functions
 
 function Pane:widgetUpdate(dt) end
-function Pane:widgetDraw() end
+function Pane:widgetDraw() self:drawDebugBounds() end
 function Pane:widgetSetDesires() end
 function Pane:widgetSetReal() end
 

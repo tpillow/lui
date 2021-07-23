@@ -33,6 +33,7 @@ function Grid:widgetUpdate(dt)
 end
 
 function Grid:widgetDraw()
+    self:drawDebugBounds()
     if self.layoutMode == utils.LayoutMode.NotSet then return end
     if self.layoutMode == utils.LayoutMode.Grid then
         for _, row in ipairs(self.gridRows) do
