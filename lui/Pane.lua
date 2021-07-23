@@ -16,20 +16,13 @@ function Pane:init()
     self.marginRight = 5
     self.marginTop = 5
     self.marginBottom = 5
-
-    self:resetLayout()
 end
 
 -- Basic updates
 
 function Pane:update(dt)
-    self:layoutUpdate(dt)
     self:widgetUpdate(dt)
-
-    self:layoutSetDesires()
     self:widgetSetDesires()
-
-    self:layoutSetReal()
     self:widgetSetReal()
 end
 
@@ -52,163 +45,8 @@ function Pane:draw()
         end
 
         -- Draw layout and widget
-        self:layoutDraw()
         self:widgetDraw()
     love.graphics.pop()
-end
-
--- Base layout functions
-
-function Pane:layoutUpdate(dt)
-    if self.layoutMode == utils.LayoutMode.NotSet then return end
-    if self.layoutMode == utils.LayoutMode.Grid then
-        for _, row in ipairs(self.gridRows) do
-            for _, col in ipairs(row.cols) do
-                col.content:update(dt)
-            end
-        end
-    else
-        assert(false, "unknown layoutMode " .. self.layoutMode)
-    end
-end
-
-function Pane:layoutDraw()
-    if self.layoutMode == utils.LayoutMode.NotSet then return end
-    if self.layoutMode == utils.LayoutMode.Grid then
-        for _, row in ipairs(self.gridRows) do
-            for _, col in ipairs(row.cols) do
-            
-            end
-        end
-    else
-        assert(false, "unknown layoutMode " .. self.layoutMode)
-    end
-end
-
-function Pane:layoutSetDesires()
-    if self.layoutMode == utils.LayoutMode.NotSet then return end
-    if self.layoutMode == utils.LayoutMode.Grid then
-        for _, row in ipairs(self.gridRows) do
-            for _, col in ipairs(row.cols) do
-            
-            end
-        end
-    else
-        assert(false, "unknown layoutMode " .. self.layoutMode)
-    end
-end
-
-function Pane:layoutSetReal()
-    if self.layoutMode == utils.LayoutMode.NotSet then return end
-    if self.layoutMode == utils.LayoutMode.Grid then
-        for _, row in ipairs(self.gridRows) do
-            for _, col in ipairs(row.cols) do
-            
-            end
-        end
-    else
-        assert(false, "unknown layoutMode " .. self.layoutMode)
-    end
-end
-
-function Pane:resetLayout()
-    self.layoutMode = utils.LayoutMode.NotSet
-    self.gridRows = nil
-    self.gridColStarted = false
-end
-
--- Grid functionality
-
--- Grid helpers
-
-function Pane:getCurGridRow()
-    assert(self.layoutMode == utils.LayoutMode.Grid)
-    return self.gridRows[#self.gridRows]
-end
-
-function Pane:getCurGridCol()
-    assert(self.gridColStarted)
-    return self:getCurGridRow().cols[#self:getCurGridRow().cols]
-end
-
-function Pane:row()
-    -- Checks
-    assert(self.layoutMode == utils.LayoutMode.Grid or self.layoutMode == utils.LayoutMode.NotSet)
-    if self.layoutMode == utils.LayoutMode.NotSet then
-        self.layoutMode = utils.LayoutMode.Grid
-        self.gridRows = {}
-    end
-    self.gridColStarted = false
-
-    -- Create a new row
-    table.insert(self.gridRows, {
-        height = "auto",
-        cols = {},
-    })
-
-    return self
-end
-
-function Pane:rowHeight(spec)
-    assert(self.layoutMode == utils.LayoutMode.Grid)
-    self:getCurGridRow().height = spec
-    return self
-end
-
-function Pane:col()
-    -- Checks
-    assert(self.layoutMode == utils.LayoutMode.Grid)
-
-    -- Create column
-    self.gridColStarted = true
-    table.insert(self.gridRows[#self.gridRows].cols, {
-        width = "auto",
-        content = nil,
-        hAlign = utils.HAlign.Left,
-        vAlign = utils.VAlign.Top,
-        hFitMode = utils.FitMode.Fit,
-        vFitMode = utils.FitMode.Fit,
-    })
-
-    return self
-end
-
-function Pane:colWidth(spec)
-    assert(self.gridColStarted)
-    self:getCurGridCol().width = spec
-    return self
-end
-
-function Pane:colContent(content)
-    assert(self.gridColStarted)
-    assert(content:instanceOf(Pane))
-    self:getCurGridCol().content = content
-    content.parent = self
-    return self
-end
-
-function Pane:colHAlign(align)
-    assert(self.gridColStarted)
-    self:getCurGridCol().hAlgin = align
-    return self
-end
-
-function Pane:colVAlign(align)
-    assert(self.gridColStarted)
-    self:getCurGridCol().vAlgin = align
-    return self
-end
-
-function Pane:colHFitMode(mode)
-    assert(self.gridColStarted)
-    self:getCurGridCol().hFitMode = mode
-    return self
-end
-
-function Pane:colVFitMode(mode)
-    assert(self.gridColStarted)
-    self:getCurGridCol().vFitMode = mode
-    return self
 end
 
 -- Widget functions

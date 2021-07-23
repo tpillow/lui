@@ -3,8 +3,11 @@ local lui = {}
 -- Core
 lui.Pane = require("lui.Pane")
 
+-- Layouts
+lui.Grid = require("lui.layout.Grid")
+
 -- Widgets
-lui.ColorRect = require("lui.ColorRect")
+lui.ColorRect = require("lui.widget.ColorRect")
 
 -- Utils
 lui.utils = require("lui.util.utils")

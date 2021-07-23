@@ -1,7 +1,7 @@
 local lui = require("lui.lui")
 
 function love.load()
-    a = lui.Pane:new()
+    a = lui.Grid:new()
     a:setBounds(50, 50, 600, 500)
 
     b = lui.ColorRect:new()
