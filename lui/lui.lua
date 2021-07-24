@@ -2,6 +2,7 @@ local lui = {}
 
 -- Core
 lui.Pane = require("lui.Pane")
+lui.Stage = require("lui.Stage")
 
 -- Layouts
 lui.Grid = require("lui.layout.Grid")

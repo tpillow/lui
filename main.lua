@@ -2,6 +2,9 @@ local lui = require("lui.lui")
 
 function love.load()
     love.graphics.setFont(love.graphics.newFont(24))
+    love.window.setMode(800, 600, { resizable = true })
+
+    stage = lui.Stage:new()
 
     a = lui.Grid:new()
     a:setBounds(50, 50, 600, 500)
@@ -33,15 +36,17 @@ function love.load()
         row():rowHeight("auto"):
             col(d):col(d2):
         row():rowHeight("1*"):
-            col(e):
+            col(e):colWidth(100):
         row():rowHeight("4*"):
-            col(f)
+            col(f):colWidth("1*")
+
+    stage:addChild(a)
 end
 
 function love.update(dt)
-    a:update(dt)
+    stage:update(dt)
 end
 
 function love.draw()
-    a:draw()
+    stage:draw()
 end

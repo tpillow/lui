@@ -60,10 +60,17 @@ function utils.getSizeSpecPixel(spec)
     return tonumber(spec)
 end
 
--- String functions
+-- Object extension functions
 
 function utils.strEndsWith(str, suffix)
     return str:sub(-string.len(suffix)) == suffix
+end
+
+function utils.findInList(list, value)
+    for idx, test in ipairs(list) do
+        if test == value then return idx end
+    end
+    return -1
 end
 
 -- Math functions

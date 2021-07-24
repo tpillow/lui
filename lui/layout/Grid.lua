@@ -219,8 +219,8 @@ function Grid:col(content)
         content = nil,
         hAlign = utils.HAlign.Left,
         vAlign = utils.VAlign.Top,
-        hFitMode = utils.FitMode.Fit,
-        vFitMode = utils.FitMode.Fit,
+        hFitMode = utils.FitMode.Expand,
+        vFitMode = utils.FitMode.Expand,
     })
     self:colContent(content or Pane:new())
 
@@ -255,11 +255,11 @@ end
 
 function Grid:colHFitMode(mode)
     assert(self.gridColStarted)
-    self:getCurGridCol().hFitMode = mode
+    self:getCurGridCol().hFitMode = mode 
     return self
 end
 
-function Grid:colVFitMode(mode)
+function Grid:colVFitMode(align)
     assert(self.gridColStarted)
     self:getCurGridCol().vFitMode = mode
     return self
