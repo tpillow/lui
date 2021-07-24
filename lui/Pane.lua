@@ -59,10 +59,16 @@ function Pane:getBounds()
 end
 
 function Pane:getFullBounds()
-    return self.x - self.marginLeft,
-           self.y - self.marginTop,
-           self.width + self.marginRight + self.marginLeft,
-           self.height + self.marginBottom + self.marginTop
+    return self.x - self.marginLeft, self.y - self.marginTop,
+           self:getFullWidth(), self:getFullHeight()
+end
+
+function Pane:getFullWidth()
+    return self.width + self.marginRight + self.marginLeft
+end
+
+function Pane:getFullHeight()
+    return self.height + self.marginBottom + self.marginTop
 end
 
 -- Etc helpers
@@ -89,6 +95,12 @@ end
 function Pane:setSize(w, h)
     self.width = w
     self.height = h
+    return self
+end
+
+function Pane:setSizeIncludesMargin(w, h)
+    self.width = w - self.marginLeft - self.marginRight
+    self.height = h - self.marginTop - self.marginBottom
     return self
 end
 

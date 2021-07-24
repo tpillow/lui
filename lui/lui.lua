@@ -7,6 +7,7 @@ lui.Pane = require("lui.Pane")
 lui.Grid = require("lui.layout.Grid")
 
 -- Widgets
+lui.Label = require("lui.widget.Label")
 lui.ColorRect = require("lui.widget.ColorRect")
 
 -- Utils

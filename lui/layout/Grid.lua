@@ -7,6 +7,7 @@ local Grid = utils.class(Pane)
 
 function Grid:init()
     self:resetGrid()
+    self.fillParent = false
 end
 
 -- Grid general helpers
@@ -37,6 +38,12 @@ function Grid:widgetDraw()
 end
 
 function Grid:widgetSetDesires()
+    for _, row in ipairs(self.gridRows) do
+        for _, col in ipairs(row.cols) do
+            col.content:widgetSetDesires()
+        end
+    end
+    
     local desiredWidth = 0
     local desiredHeight = 0
 
@@ -45,11 +52,9 @@ function Grid:widgetSetDesires()
         row.desiredHeight = 0
 
         for _, col in ipairs(row.cols) do
-            col.content:widgetSetDesires()
-
             utils.switchSizeSpec(col.width,
                 function()
-                    row.desiredWidth = row.desiredWidth + col.content.width
+                    row.desiredWidth = row.desiredWidth + col.content:getFullWidth()
                 end,
                 function(weight)
                 end,
@@ -57,11 +62,11 @@ function Grid:widgetSetDesires()
                     row.desiredWidth = row.desiredWidth + pixels
                 end)
 
-            if col.content.height > row.desiredHeight then
-                row.desiredHeight = col.content.height
+            if col.content:getFullHeight() > row.desiredHeight then
+                row.desiredHeight = col.content:getFullHeight()
             end
         end
-
+            
         utils.switchSizeSpec(row.height,
             function() -- Auto is handled/added up above
             end,
@@ -77,8 +82,17 @@ function Grid:widgetSetDesires()
     end
 
     -- Set our desires
-    self.width = desiredWidth
-    self.height = desiredHeight
+    if self.fillParent then
+        self:setPosition(0, 0)
+        if self.parent then
+            self:setSizeIncludesMargin(self.parent.width, self.parent.height)
+        else
+            self:setSizeIncludesMargin(love.graphics.getWidth(), love.graphics.getHeight())
+        end
+    else
+        self.width = desiredWidth
+        self.height = desiredHeight
+    end
 end
 
 function Grid:widgetSetReal()
@@ -97,7 +111,7 @@ function Grid:widgetSetReal()
         for _, col in ipairs(row.cols) do
             utils.switchSizeSpec(col.width,
                 function()
-                    allocatedWidth = allocatedWidth + col.content.width
+                    allocatedWidth = allocatedWidth + col.content:getFullWidth()
                 end,
                 function(weight)
                     widthWeightTotal = widthWeightTotal + weight
@@ -106,8 +120,8 @@ function Grid:widgetSetReal()
                     allocatedWidth = allocatedWidth + pixels
                 end)
             
-            if col.content.height > largestColHeight then
-                largestColHeight = col.content.height
+            if col.content:getFullHeight() > largestColHeight then
+                largestColHeight = col.content:getFullHeight()
             end
         end
 
@@ -140,13 +154,13 @@ function Grid:widgetSetReal()
         local extraWidth = extraWidthList[rowIdx]
 
         for _, col in ipairs(row.cols) do
-            local width = utils.computeSizeSpec(col.width, col.content.width,
+            local width = utils.computeSizeSpec(col.width, col.content:getFullWidth(),
                                                 widthWeightTotal, extraWidth)
-            height = utils.computeSizeSpec(row.height, col.content.height,
+            height = utils.computeSizeSpec(row.height, row.desiredHeight,
                                            heightWeightTotal, extraHeight)
 
             col.content:setPosition(curX, curY)
-            col.content:setSize(width, height)
+            col.content:setSizeIncludesMargin(width, height)
 
             curX = curX + width
         end
