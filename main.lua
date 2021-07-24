@@ -16,7 +16,7 @@ function love.load()
     a:
         row():rowHeight(50):
             col(b):colWidth(50):
-            col(c):colWidth("1*"):
+            col(c):colWidth(80):
         row():rowHeight(25):
             col(d)
 end

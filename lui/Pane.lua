@@ -16,6 +16,13 @@ function Pane:init()
     self.marginRight = 0
     self.marginTop = 0
     self.marginBottom = 0
+
+    self.minWidth = 0
+    self.minHeight = 0
+    self.maxWidth = 2^31
+    self.maxHeight = 2^31
+
+    self.visible = true
 end
 
 -- Basic updates
@@ -27,6 +34,8 @@ function Pane:update(dt)
 end
 
 function Pane:draw()
+    if not self.visible then return end
+
     love.graphics.push()
         -- Move to proper position (including margin)
         love.graphics.translate(self.x + self.marginLeft, self.y + self.marginTop)
@@ -41,7 +50,7 @@ end
 function Pane:widgetUpdate(dt) end
 function Pane:widgetDraw() self:drawDebugBounds() end
 function Pane:widgetSetDesires() end
-function Pane:widgetSetReal() end
+function Pane:widgetSetReal() self:ensureMinMaxSize() end
 
 -- Getter helpers
 
@@ -54,6 +63,13 @@ function Pane:getFullBounds()
            self.y - self.marginTop,
            self.width + self.marginRight + self.marginLeft,
            self.height + self.marginBottom + self.marginTop
+end
+
+-- Etc helpers
+
+function Pane:ensureMinMaxSize()
+    self.width = utils.clamp(self.width, self.minWidth, self.maxWidth)
+    self.height = utils.clamp(self.height, self.minHeight, self.maxHeight)
 end
 
 -- Set helpers
@@ -74,6 +90,21 @@ function Pane:setSize(w, h)
     self.width = w
     self.height = h
     return self
+end
+
+function Pane:setMinSize(w, h)
+    self.minWidth = w
+    self.minHeight = h
+end
+
+function Pane:setMaxSize(w, h)
+    self.maxWidth = w
+    self.maxHeight = h
+end
+
+function Pane:setMinMaxSize(mw, mh, xw, xh)
+    self:setMinSize(mw, mh)
+    self:setMaxSize(xw, xh)
 end
 
 function Pane:setMargin(left, top, right, bottom)

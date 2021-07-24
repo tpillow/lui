@@ -32,19 +32,127 @@ function Grid:widgetDraw()
             col.content:draw()
         end
     end
-    
+
     self:drawDebugBounds()
 end
 
 function Grid:widgetSetDesires()
+    local desiredWidth = 0
+    local desiredHeight = 0
+
     for _, row in ipairs(self.gridRows) do
+        row.desiredWidth = 0
+        row.desiredHeight = 0
+
         for _, col in ipairs(row.cols) do
             col.content:widgetSetDesires()
+
+            utils.switchSizeSpec(col.width,
+                function()
+                    row.desiredWidth = row.desiredWidth + col.content.width
+                end,
+                function(weight)
+                end,
+                function(pixels)
+                    row.desiredWidth = row.desiredWidth + pixels
+                end)
+
+            if col.content.height > row.desiredHeight then
+                row.desiredHeight = col.content.height
+            end
         end
+
+        utils.switchSizeSpec(row.height,
+            function() -- Auto is handled/added up above
+            end,
+            function(weight)
+                row.desiredHeight = 0
+            end,
+            function(pixels)
+                row.desiredHeight = pixels
+            end)
+        
+        if row.desiredWidth > desiredWidth then desiredWidth = row.desiredWidth end
+        desiredHeight = desiredHeight + row.desiredHeight
     end
+
+    -- Set our desires
+    self.width = desiredWidth
+    self.height = desiredHeight
 end
 
 function Grid:widgetSetReal()
+    self:ensureMinMaxSize()
+    
+    local widthWeightTotalList = {}
+    local allocatedWidthList = {}
+    local heightWeightTotal = 0
+    local allocatedHeight = 0
+
+    for _, row in ipairs(self.gridRows) do
+        local widthWeightTotal = 0
+        local allocatedWidth = 0
+        local largestColHeight = 0
+
+        for _, col in ipairs(row.cols) do
+            utils.switchSizeSpec(col.width,
+                function()
+                    allocatedWidth = allocatedWidth + col.content.width
+                end,
+                function(weight)
+                    widthWeightTotal = widthWeightTotal + weight
+                end,
+                function(pixels)
+                    allocatedWidth = allocatedWidth + pixels
+                end)
+            
+            if col.content.height > largestColHeight then
+                largestColHeight = col.content.height
+            end
+        end
+
+        utils.switchSizeSpec(row.height,
+            function()
+                allocatedHeight = allocatedHeight + largestColHeight
+            end,
+            function(weight)
+                heightWeightTotal = heightWeightTotal + weight
+            end,
+            function(pixels)
+                allocatedHeight = allocatedHeight + pixels
+            end)
+
+        table.insert(widthWeightTotalList, widthWeightTotal)
+        table.insert(allocatedWidthList, allocatedWidth)
+    end
+
+    local extraWidthList = {}
+    for _, allocedWidth in ipairs(allocatedWidthList) do
+        table.insert(extraWidthList, self.width - allocedWidth)
+    end
+    local extraHeight = self.height - allocatedHeight
+
+    local curY = 0
+    for rowIdx, row in ipairs(self.gridRows) do
+        local curX = 0
+        local height = 0
+        local widthWeightTotal = widthWeightTotalList[rowIdx]
+        local extraWidth = extraWidthList[rowIdx]
+
+        for _, col in ipairs(row.cols) do
+            local width = utils.computeSizeSpec(col.width, col.content.width,
+                                                widthWeightTotal, extraWidth)
+            height = utils.computeSizeSpec(row.height, col.content.height,
+                                           heightWeightTotal, extraHeight)
+
+            col.content:setPosition(curX, curY)
+            col.content:setSize(width, height)
+
+            curX = curX + width
+        end
+        curY = curY + height
+    end
+    
     for _, row in ipairs(self.gridRows) do
         for _, col in ipairs(row.cols) do
             col.content:widgetSetReal()
@@ -72,6 +180,8 @@ function Grid:row()
 
     table.insert(self.gridRows, {
         height = "auto",
+        desiredWidth = 0,
+        desiredHeight = 0,
         cols = {},
     })
 
