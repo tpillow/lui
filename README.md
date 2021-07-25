@@ -8,17 +8,17 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
     - [x] Pane
     - [x] Window Stage
     - [x] Input
-- [p] Layouts
+- [ ] Layouts
     - [x] Grid
     - [x] Container
     - [x] StackContainer
     - [ ] HStackContainer
     - [ ] VStackContainer
     - [ ] ScrollContainer
-- [p] Widgets
+- [ ] Widgets
     - [x] ColorRect
     - [x] Window
-    - [p] Label
+    - [x] Label
     - [ ] Button
     - [ ] Canvas
 
