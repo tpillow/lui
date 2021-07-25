@@ -21,8 +21,8 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
     - [x] ColorRect
     - [x] Window
     - [x] Label
+    - [x] Canvas
     - [ ] ComboBox
     - [ ] Menubar
     - [ ] Button
-    - [ ] Canvas
 

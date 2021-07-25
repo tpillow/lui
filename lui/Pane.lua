@@ -151,7 +151,7 @@ function Pane:drawDebugBounds()
         local _, _, fw, fh = self:getFullBounds()
         local oldLineWidth = love.graphics.getLineWidth()
         love.graphics.setLineWidth(luiDebugLineWidth)
-        love.graphics.setColor(luiMarginDebugColor:unpackRGBA())
+        love.graphics.setColor(luiDebugMarginColor:unpackRGBA())
         love.graphics.rectangle("line", 0, 0, self.width, self.height)
         love.graphics.setColor(luiDebugColor:unpackRGBA())
         love.graphics.rectangle("line", -self.marginLeft, -self.marginTop, fw,
