@@ -13,10 +13,7 @@ function Pane:init()
     self.width = 20
     self.height = 20
 
-    self.marginLeft = 0
-    self.marginRight = 0
-    self.marginTop = 0
-    self.marginBottom = 0
+    self.margin = { 0, 0, 0, 0 }
 
     self.minWidth = 0
     self.minHeight = 0
@@ -41,8 +38,8 @@ function Pane:draw()
 
     love.graphics.push()
         -- Move to proper position (with margin added)
-        love.graphics.translate(self.x + self.marginLeft,
-                                self.y + self.marginTop)
+        love.graphics.translate(self.x + self:getMarginLeft(),
+                                self.y + self:getMarginTop())
 
         -- Draw layout and widget
         self:widgetDraw()
@@ -64,17 +61,23 @@ function Pane:getBounds()
 end
 
 function Pane:getFullBounds()
-    return self.x - self.marginLeft, self.y - self.marginTop,
+    return self.x - self:getMarginLeft(), self.y - self:getMarginTop(),
            self:getFullWidth(), self:getFullHeight()
 end
 
 function Pane:getFullWidth()
-    return self.width + self.marginRight + self.marginLeft
+    return self.width + self:getMarginRight() + self:getMarginLeft()
 end
 
 function Pane:getFullHeight()
-    return self.height + self.marginBottom + self.marginTop
+    return self.height + self:getMarginBottom() + self:getMarginTop()
 end
+
+function Pane:getMarginLeft() return self.margin[utils.MPIdx.Left] end
+function Pane:getMarginTop() return self.margin[utils.MPIdx.Top] end
+function Pane:getMarginRight() return self.margin[utils.MPIdx.Right] end
+function Pane:getMarginBottom() return self.margin[utils.MPIdx.Bottom] end
+
 
 -- Etc helpers
 
@@ -104,12 +107,12 @@ function Pane:setSize(w, h)
 end
 
 function Pane:setWidthIncludesMargin(w)
-    self.width = w - self.marginLeft - self.marginRight
+    self.width = w - self:getMarginLeft() - self:getMarginRight()
     return self
 end
 
 function Pane:setHeightIncludesMargin(h)
-    self.height = h - self.marginTop - self.marginBottom
+    self.height = h - self:getMarginTop() - self:getMarginBottom()
     return self
 end
 
@@ -136,10 +139,7 @@ end
 
 function Pane:setMargin(left, top, right, bottom)
     if top ~= nil and right ~= nil then
-        self.marginLeft = left
-        self.marginTop = top
-        self.marginRight = right
-        self.marginBottom = bottom
+        self.margin = { left, top, right, bottom }
     elseif top ~= nil and right == nil then
         self:setMargin(left, top, left, top)
     else
@@ -159,8 +159,8 @@ function Pane:drawDebugBounds()
         love.graphics.setColor(luiDebugMarginColor:unpackRGBA())
         love.graphics.rectangle("line", 0, 0, self.width, self.height)
         love.graphics.setColor(luiDebugColor:unpackRGBA())
-        love.graphics.rectangle("line", -self.marginLeft, -self.marginTop, fw,
-                                fh)
+        love.graphics.rectangle("line", -self:getMarginLeft(), -self:getMarginTop(),
+                                fw, fh)
         love.graphics.setLineWidth(oldLineWidth)
     end
 end
@@ -171,7 +171,7 @@ function Pane:globalCoordToLocal(x, y)
     if self.parent then
         x, y = self.parent:globalCoordToLocal(x, y)
     end
-    return x - self.x + self.marginLeft, y - self.y + self.marginTop
+    return x - self.x + self:getMarginLeft(), y - self.y + self:getMarginTop()
 end
 
 function Pane:globalCoordInBounds(x, y)

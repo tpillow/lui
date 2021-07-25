@@ -26,7 +26,14 @@ style.defaultStyles = {
             ["MenuBar"] = {
                 crBackground__fillColor = cSecondary,
             },
-            ["Panel"] = {},
+            ["Panel"] = {
+                backgroundColorRect__ = {
+                    lineColor = cPanel,
+                    lineWidth = 3,
+                },
+                backgroundColorRect__fillColor = cBackground,
+                padding = { 5, 5, 5, 5 },
+            },
 
         ["Grid"] = {},
 
@@ -45,29 +52,36 @@ function style.getDefaultStyle(key)
 end
 
 function style.applyStyle(pane, styleDict)
-    local function setProps(dict)
+    local function setProps(obj, dict)
         assert(type(dict) == "table",
                "style.applyStyle: style dict must be a table of properties")
         for key, val in pairs(dict) do
-            local curObj = pane
-            local keyParts = utils.strSplit(key, "__")
-            for keyPartIdx = 1, #keyParts do
-                local keyPart = keyParts[keyPartIdx]
-                assert(curObj[keyPart], "style.applyStyle.setProps: when parsing '" ..
+            if utils.strEndsWith(key, "__") then
+                local keyPart = key:sub(1, string.len(key) - 2)
+                assert(obj[keyPart], "style.applyStyle.setProps: when parsing '" ..
                        key .. "' unfound property: " .. keyPart)
-                if keyPartIdx < #keyParts then
-                    curObj = curObj[keyPart]
-                else
-                    curObj[keyPart] = val
+                setProps(obj[keyPart], val)
+            else
+                local curObj = obj
+                local keyParts = utils.strSplit(key, "__")
+                for keyPartIdx = 1, #keyParts do
+                    local keyPart = keyParts[keyPartIdx]
+                    assert(curObj[keyPart], "style.applyStyle.setProps: when parsing '" ..
+                           key .. "' unfound property: " .. keyPart)
+                    if keyPartIdx < #keyParts then
+                        curObj = curObj[keyPart]
+                    else
+                        curObj[keyPart] = val
+                    end
                 end
             end
         end
     end
 
     if type(styleDict) == "table" then
-        setProps(styleDict)
+        setProps(pane, styleDict)
     elseif type(styleDict) == "string" then
-        setProps(style.getDefaultStyle(styleDict))
+        setProps(pane, style.getDefaultStyle(styleDict))
     else
         assert(false, "style.applyStyle: styleDict must be a table or default style name")
     end
