@@ -14,7 +14,7 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
     - [x] Grid
     - [x] Container
     - [x] StackContainer
-    - [ ] HStackContainer
+    - [x] HStackContainer
     - [ ] VStackContainer
     - [ ] ScrollContainer
 - [ ] Widgets

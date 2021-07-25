@@ -41,15 +41,16 @@ function love.load()
             col(f):colWidth("1*")
 
     win0 = lui.Window:new()
-    win0:setShowTitleBar(false)
+    win0.showTitleBar = false
     win0.alwaysFullScreen = true
     win0.alwaysOnBottom = true
+    win0.borderWidth = 0
     win0:setWindowContent(a)
 
     stage:addChild(win0)
 
     win1 = lui.Window:new()
-    win1:setTitle("Window #1")
+    win1.title = "Window #1"
     win1:setBounds(200, 200, 300, 300)
 
     mb1 = lui.MenuBar:new()
@@ -60,11 +61,14 @@ function love.load()
         menu("Edit"):
             menuItem("Copy"):
             menuItem("Paste")
-    win1:setMenuBar(mb1)
-
-    w0 = lui.ColorRect:new()
-    w0.fillColor = lui.Color.newFromRGBA(0.2, 0.2, 0.2, 0.5)
-    win1:setWindowContent(w0)
+    win1.menuBar = mb1
+    
+    --w0 = lui.ColorRect:new()
+    --w0.fillColor = lui.Color.newFromRGBA(0.2, 0.2, 0.2, 0.5)
+    --win1:setWindowContent(w0)
+    w1 = lui.Label:new()
+    w1.text = "Some content!"
+    win1:setWindowContent(w1)
 
     stage:addChild(win1)
 end

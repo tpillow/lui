@@ -19,13 +19,14 @@ lui.MenuBar = require("lui.widget.MenuBar")
 
 -- Utils
 lui.utils = require("lui.util.utils")
+lui.style = require("lui.util.style")
 lui.Color = require("lui.util.Color")
 
 -- Debug (GLOBALS)
 luiDebugColor = lui.Color.newFromRGBA(1, 0, 0, 1)
 luiDebugMarginColor = lui.Color.newFromRGBA(1, 1, 0, 1)
 luiDebugLineWidth = 1
-luiDebugBounds = true
+luiDebugBounds = false
 
 -- Return module
 return lui

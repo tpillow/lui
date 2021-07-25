@@ -1,10 +1,19 @@
 local utils = require("lui.util.utils")
+local style = require("lui.util.style")
 local Pane = require("lui.Pane")
 
 local StackContainer = utils.class(Pane)
 
 function StackContainer:init()
     self.children = {}
+
+    style.applyStyle(self, "StackContainer")
+end
+
+function StackContainer:widgetBuild()
+    for _, child in ipairs(self.children) do
+        child:widgetBuild()
+    end
 end
 
 function StackContainer:widgetUpdate(dt)
@@ -28,8 +37,12 @@ function StackContainer:widgetSetDesires()
     for _, child in ipairs(self.children) do
         child:widgetSetDesires()
 
-        if child.width > self.width then self.width = child.width end
-        if child.height > self.height then self.height = child.height end
+        if child:getFullWidth() > self.width then
+            self.width = child:getFullWidth()
+        end
+        if child:getFullHeight() > self.height then
+            self.height = child:getFullHeight()
+        end
     end
 end
 
@@ -46,10 +59,17 @@ function StackContainer:getChildrenCount()
     return #self.children
 end
 
+function StackContainer:peekChild()
+    assert(#self.children > 0)
+    return self.children[#self.children]
+end
+
 function StackContainer:pushChild(child)
     assert(utils.instanceOf(child, Pane))
     table.insert(self.children, child)
     child.parent = self
+    child:widgetBuild()
+    self:widgetBuild()
 end
 
 function StackContainer:popChild()

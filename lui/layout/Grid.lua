@@ -1,4 +1,5 @@
 local utils = require("lui.util.utils")
+local style = require("lui.util.style")
 local Pane = require("lui.Pane")
 
 local Grid = utils.class(Pane)
@@ -7,6 +8,8 @@ local Grid = utils.class(Pane)
 
 function Grid:init()
     self:reset()
+
+    style.applyStyle(self, "Grid")
 end
 
 -- Grid general helpers
@@ -17,6 +20,14 @@ function Grid:reset()
 end
 
 -- Widget functions
+
+function Grid:widgetBuild()
+    for _, row in ipairs(self.gridRows) do
+        for _, col in ipairs(row.cols) do
+            col.content:widgetBuild()
+        end
+    end
+end
 
 function Grid:widgetUpdate(dt)
     for _, row in ipairs(self.gridRows) do
@@ -261,6 +272,8 @@ function Grid:colContent(content)
     assert(utils.instanceOf(content, Pane))
     self:getCurGridCol().content = content
     content.parent = self
+    content:widgetBuild()
+    self:widgetBuild()
     return self
 end
 

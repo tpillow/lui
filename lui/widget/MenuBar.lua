@@ -1,4 +1,5 @@
 local utils = require("lui.util.utils")
+local style = require("lui.util.style")
 local StackContainer = require("lui.layout.StackContainer")
 local ColorRect = require("lui.widget.ColorRect")
 local HStackContainer = require("lui.layout.HStackContainer")
@@ -12,16 +13,18 @@ local MenuBar = utils.class(StackContainer)
 
 function MenuBar:init()
     self.menus = {}
-
-    local tmp = ColorRect:new()
-    tmp.fillColor:set(0.25, 0.25, 0.25, 1)
-    self:pushChild(tmp)
-
     self.hsMenus = HStackContainer:new()
+    
+    self.crBackground = ColorRect:new()
+    self.crBackground.fillColor:set(0.25, 0.25, 0.25, 1)
+    self:pushChild(self.crBackground)
+
     self:pushChild(self.hsMenus)
+
+    style.applyStyle(self, "MenuBar")
 end
 
-function MenuBar:buildMenus()
+function MenuBar:widgetBuild()
     self.hsMenus:reset()
 
     for _, menu in ipairs(self.menus) do
@@ -45,7 +48,7 @@ function MenuBar:menu(title)
         title = title,
         items = {},
     })
-    self:buildMenus()
+    self:widgetBuild()
     return self
 end
 
@@ -54,7 +57,7 @@ function MenuBar:menuItem(title, handler)
         title = title,
         handler = handler,
     })
-    self:buildMenus()
+    self:widgetBuild()
     return self
 end
 

@@ -1,4 +1,5 @@
 local utils = require("lui.util.utils")
+local style = require("lui.util.style")
 local Pane = require("lui.Pane")
 local Color = require("lui.util.Color")
 
@@ -7,6 +8,8 @@ local Canvas = utils.class(Pane)
 function Canvas:init()
     self.canvas = love.graphics.newCanvas(self.width, self.height)
     self.drawFunc = nil
+
+    style.applyStyle(self, "Canvas")
 end
 
 function Canvas:widgetUpdate(dt)

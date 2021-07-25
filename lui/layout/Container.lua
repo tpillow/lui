@@ -1,4 +1,5 @@
 local utils = require("lui.util.utils")
+local style = require("lui.util.style")
 local Pane = require("lui.Pane")
 
 local Container = utils.class(Pane)
@@ -7,6 +8,12 @@ function Container:init()
     self.containerDoSelfSetDesires = true
     
     self:setContent(nil)
+
+    style.applyStyle(self, "Container")
+end
+
+function Container:widgetBuild()
+    self.content:widgetBuild()
 end
 
 function Container:widgetUpdate(dt)
@@ -40,6 +47,8 @@ function Container:setContent(content)
     self.content = content or Pane:new()
     assert(utils.instanceOf(self.content, Pane))
     self.content.parent = self
+    self.content:widgetBuild()
+    self:widgetBuild()
 end
 
 -- Input methods

@@ -89,8 +89,20 @@ end
 
 -- Object extension functions
 
+function utils.strStartsWith(str, prefix)
+    return str:sub(1, string.len(prefix)) == prefix
+end
+
 function utils.strEndsWith(str, suffix)
     return str:sub(-string.len(suffix)) == suffix
+end
+
+function utils.strSplit(str, delim)
+    local ret = {}
+    for match in (str .. delim):gmatch("(.-)" .. delim) do
+        table.insert(ret, match)
+    end
+    return ret
 end
 
 function utils.findInList(list, value)
@@ -147,6 +159,17 @@ function utils.instanceOf(obj, Class)
     if obj.Class == Class then return true end
     if obj.Base then return utils.instanceOf(obj.Base, Class) end
     return false
+end
+
+function utils.getClassHierarchy(obj)
+    assert(obj and utils.instanceOf(obj, utils.Object))
+    local ret = {}
+    local Class = obj.Class
+    while Class do
+        table.insert(ret, Class)
+        Class = Class.Base
+    end
+    return ret
 end
 
 return utils

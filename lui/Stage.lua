@@ -114,6 +114,7 @@ function Stage:addChild(child)
     table.insert(self.children, child)
     -- TODO: if this property is changed, it's not updated here in the stage
     if child.alwaysOnBottom then self:moveToBack(child) end
+    child:widgetBuild()
 end
 
 function Stage:removeChild(child)

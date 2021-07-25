@@ -1,4 +1,5 @@
 local utils = require("lui.util.utils")
+local style = require("lui.util.style")
 
 local Pane = utils.class()
 
@@ -23,6 +24,8 @@ function Pane:init()
     self.maxHeight = 2^31
 
     self.visible = true
+
+    style.applyStyle(self, "Pane")
 end
 
 -- Basic updates
@@ -37,8 +40,9 @@ function Pane:draw()
     if not self.visible then return end
 
     love.graphics.push()
-        -- Move to proper position (including margin)
-        love.graphics.translate(self.x + self.marginLeft, self.y + self.marginTop)
+        -- Move to proper position (with margin added)
+        love.graphics.translate(self.x + self.marginLeft,
+                                self.y + self.marginTop)
 
         -- Draw layout and widget
         self:widgetDraw()
@@ -47,6 +51,7 @@ end
 
 -- Widget functions
 
+function Pane:widgetBuild() end
 function Pane:widgetUpdate(dt) end
 function Pane:widgetDraw() self:drawDebugBounds() end
 function Pane:widgetSetDesires() end
