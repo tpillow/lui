@@ -11,7 +11,8 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
     - [x] Global Style System
     - [ ] JSON UI Save/Load
 - [ ] Layouts
-    - [ ] Padding Support
+    - [ ] Padding Support for Some?
+    - [ ] Change Margin to Table
     - [x] Grid
     - [x] Container
     - [x] StackContainer

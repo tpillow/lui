@@ -6,6 +6,7 @@ utils.DrawMode = { Outline = 1, Fill = 2, FillOutline = 3 }
 utils.HAlign = { Left = 1, Center = 2, Right = 3 }
 utils.VAlign = { Top = 1, Center = 2, Bottom = 3 }
 utils.FitMode = { Auto = 1, Expand = 2 }
+utils.MPIdx = { Left = 1, Top = 2, Right = 3, Bottom = 4 }
 
 -- Align helpers
 
