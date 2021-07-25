@@ -94,9 +94,6 @@ function utils.class(Base)
     local Class = {}
     if Base then Class = Base:new() end
 
-    Class.Base = Base
-    Class.Class = Class
-
     function Class:new()
         local obj = {}
         setmetatable(obj, self)
@@ -111,15 +108,6 @@ end
 utils.Object = utils.class(nil)
 
 function utils.Object:init()
-end
-
-function utils.Object:instanceOf(Class)
-    local try = self.Class
-    while try do
-        if try == Class then return true end
-        try = self.Base
-    end
-    return false
 end
 
 return utils

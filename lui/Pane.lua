@@ -150,5 +150,53 @@ function Pane:drawDebugBounds()
     end
 end
 
+-- Input helpers
+
+function Pane:globalCoordToLocal(x, y)
+    if self.parent then
+        x, y = self.parent:globalCoordToLocal(x, y)
+    end
+    return x - self.x + self.marginLeft, y - self.y + self.marginTop
+end
+
+function Pane:globalCoordInBounds(x, y)
+    return self:localCoordInBounds(self:globalCoordToLocal(x, y))
+end
+
+function Pane:localCoordInBounds(x, y)
+    local _, _, fw, fh = self:getBounds()
+    return x >= 0 and y >= 0 and x < fw and y < fh
+end
+
+-- Input methods
+
+function Pane:mousepressed(x, y, button, istouch, presses)
+    return false
+end
+
+function Pane:mousereleased(x, y, button, istouch, presses)
+    return false
+end
+
+function Pane:mousemoved(x, y, dx, dy, istouch)
+    return false
+end
+
+function Pane:wheelmoved(x, y)
+    return false
+end
+
+function Pane:keypressed(key, scancode, isrepeat)
+    return false
+end
+
+function Pane:keyreleased(key, scancode)
+    return false
+end
+
+function Pane:textinput(text)
+    return false
+end
+
 -- Return class
 return Pane

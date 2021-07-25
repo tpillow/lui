@@ -8,6 +8,7 @@ lui.Stage = require("lui.Stage")
 lui.Grid = require("lui.layout.Grid")
 
 -- Widgets
+lui.Window = require("lui.widget.Window")
 lui.Label = require("lui.widget.Label")
 lui.ColorRect = require("lui.widget.ColorRect")
 
