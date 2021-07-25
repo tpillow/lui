@@ -8,7 +8,7 @@ local Label = require("lui.widget.Label")
 
 local MenuBar = utils.class(Panel)
 
--- TODO: redo whole menu system to better allow for customixation / submenus
+-- TODO: redo whole menu system to better allow for customization / submenus
 -- TODO: keyboard shortcut integration
 -- TODO: alignments
 
@@ -29,7 +29,6 @@ function MenuBar:widgetBuild()
         -- TODO: dropdowns
         -- TODO: stylable
         local tmp = Label:new()
-        tmp:setMargin(3)
         tmp.text = menu.title
         self.hStackContainer:pushChild(tmp)
     end

@@ -42,6 +42,10 @@ function Color:set(r, g, b, a)
     end
 end
 
+function Color:clone()
+    return Color.newFrom(self)
+end
+
 -- Static
 
 function Color.newFrom(r, g, b, a)

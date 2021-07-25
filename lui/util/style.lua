@@ -3,52 +3,57 @@ local Color = require("lui.util.Color")
 
 local style = {}
 
-local cBackground = Color.newFrom("#121212")
-local cPanel = Color.newFrom("#5E5E5E")
-local cPrimary = Color.newFrom("#E1E1E1")
-local cSecondary = Color.newFrom("#BE84FC")
+local cBackground = Color.newFrom(1, 0, 0, 1)--"#121212")
+local cPanel = Color.newFrom(1, 1, 0, 1)--"#5E5E5E")
+local cPrimary = Color.newFrom(0, 1, 0, 1)--"#E1E1E1")
+local cSecondary = Color.newFrom(0, 0, 1, 1)--"#BE84FC")
 local cTransparent = Color.newFrom(1, 1, 1, 0)
 
+-- Can be a property: propertyName = value
+-- Can be a property of another property: propertyName__subProp__subProp = value
+-- Can be many properties of another property: propertyName__ = { prop: val, ... }
+-- A property cannot be nil here, as an assertion will be thrown to help catch typos
 style.defaultStyles = {
     -- Everything here should extend from Pane
-    ["Pane"] = {},
+    Pane = {},
         -- Children of layouts
-        ["Container"] = {},
-            ["HStackContainer"] = {},
-            ["Window"] = {
-                borderColor = cPanel,
+        Container = {},
+            HStackContainer = {},
+            Window = {
+                borderColor = cPanel:clone(),
                 borderWidth = 2,
-                titleBarBackgroundColor = cBackground,
-                titleBarColor = cPrimary,
-                backgroundColor = cBackground,
+                titleBarBackgroundColor = cBackground:clone(),
+                titleBarColor = cPrimary:clone(),
+                backgroundColor = cBackground:clone(),
                 titleBarMargin = 5,
                 contentMargin = 5,
             },
-            ["Panel"] = {
+            Panel = {
                 backgroundColorRect__ = {
-                    lineColor = cPanel,
+                    lineColor = cPanel:clone(),
+                    fillColor = cBackground:clone(),
                     drawMode = utils.DrawMode.FillOutline,
                     lineWidth = 3,
+                    cornerRadius = 5,
                 },
-                backgroundColorRect__fillColor = cBackground,
                 padding = { 5, 5, 5, 5 },
             },
-                ["MenuBar"] = {},
+                MenuBar = {},
 
-        ["StackContainer"] = {},
+        StackContainer = {},
 
-        ["Grid"] = {},
+        Grid = {},
 
         -- Standalone Widgets
-        ["Label"] = {
-            color = cPrimary,
-            backgroundColor = cTransparent,
+        Label = {
+            color = cPrimary:clone(),
+            backgroundColor = cTransparent:clone(),
         },
-        ["ColorRect"] = {
-            fillColor = cPanel,
+        ColorRect = {
+            fillColor = cPanel:clone(),
             drawMode = utils.DrawMode.Fill,
         },
-        ["Canvas"] = {},
+        Canvas = {},
 }
 
 function style.getDefaultStyle(key)
