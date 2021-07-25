@@ -43,6 +43,7 @@ function love.load()
     win0 = lui.Window:new()
     win0:setShowTitlebar(false)
     win0.alwaysFullScreen = true
+    win0.alwaysOnBottom = true
     win0:setWindowContent(a)
 
     stage:addChild(win0)

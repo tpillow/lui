@@ -28,6 +28,7 @@ function Window:init()
 
     self.dragging = false
     self._showTitlebar = true
+    self.alwaysOnBottom = false
     self.alwaysFullScreen = false
 
     self:setContent(Grid:new())
