@@ -19,11 +19,15 @@ end
 
 function Container:widgetSetDesires()
     self.content:widgetSetDesires()
+
+    self.width = self.content.width
+    self.height = self.content.height
 end
 
 function Container:widgetSetReal()
     self:ensureMinMaxSize()
 
+    self.content:setSizeIncludesMargin(self.width, self.height)
     self.content:widgetSetReal()
 end
 
