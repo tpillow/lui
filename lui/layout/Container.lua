@@ -4,8 +4,9 @@ local Pane = require("lui.Pane")
 local Container = utils.class(Pane)
 
 function Container:init()
-    self:setContent(nil)
     self.containerDoSelfSetDesires = true
+    
+    self:setContent(nil)
 end
 
 function Container:widgetUpdate(dt)

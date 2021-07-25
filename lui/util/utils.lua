@@ -5,7 +5,16 @@ local utils = {}
 utils.DrawMode = { Outline = 1, Fill = 2, FillOutline = 3 }
 utils.HAlign = { Left = 1, Center = 2, Right = 3 }
 utils.VAlign = { Top = 1, Center = 2, Bottom = 3 }
-utils.FitMode = { Fit = 1, Expand = 2 }
+utils.FitMode = { Auto = 1, Expand = 2 }
+
+-- FitMode helpers
+
+function utils.switchFitMode(mode, autoHandler, expandHandler)
+    assert(mode and autoHandler and expandHandler)
+    if mode == utils.FitMode.Auto then autoHandler()
+    elseif mode == utils.FitMode.Expand then expandHandler()
+    else assert(false, "utils.switchFitMode: unknown fit mode: " .. mode) end
+end
 
 -- Size spec functions
 

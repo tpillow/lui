@@ -4,10 +4,12 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
 
 ## Features
 
-- [x] Core
+- [ ] Core
     - [x] Pane
     - [x] Window Stage
     - [x] Input
+    - [ ] Global Style System
+    - [ ] JSON UI Save/Load
 - [ ] Layouts
     - [x] Grid
     - [x] Container
@@ -19,6 +21,8 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
     - [x] ColorRect
     - [x] Window
     - [x] Label
+    - [ ] ComboBox
+    - [ ] Menubar
     - [ ] Button
     - [ ] Canvas
 

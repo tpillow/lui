@@ -150,7 +150,25 @@ function Grid:widgetSetReal()
                                            heightWeightTotal, extraHeight)
 
             col.content:setPosition(curX, curY)
-            col.content:setSizeIncludesMargin(width, height)
+
+            utils.switchFitMode(col.hFitMode,
+                function()
+                    if col.content:getFullWidth() > width then
+                        col.content:setWidthIncludesMargin(width)
+                    end
+                end,
+                function()
+                    col.content:setWidthIncludesMargin(width)
+                end)
+            utils.switchFitMode(col.vFitMode,
+                function()
+                    if col.content:getFullHeight() > height then
+                        col.content:setHeightIncludesMargin(height)
+                    end
+                end,
+                function()
+                    col.content:setHeightIncludesMargin(height)
+                end)
 
             curX = curX + width
         end
@@ -210,7 +228,6 @@ function Grid:col(content)
         -- TODO: Align
         hAlign = utils.HAlign.Left,
         vAlign = utils.VAlign.Top,
-        -- TODO: Fit
         hFitMode = utils.FitMode.Expand,
         vFitMode = utils.FitMode.Expand,
     })

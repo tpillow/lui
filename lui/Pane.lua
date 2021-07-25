@@ -98,9 +98,19 @@ function Pane:setSize(w, h)
     return self
 end
 
-function Pane:setSizeIncludesMargin(w, h)
+function Pane:setWidthIncludesMargin(w)
     self.width = w - self.marginLeft - self.marginRight
+    return self
+end
+
+function Pane:setHeightIncludesMargin(h)
     self.height = h - self.marginTop - self.marginBottom
+    return self
+end
+
+function Pane:setSizeIncludesMargin(w, h)
+    self:setWidthIncludesMargin(w)
+    self:setHeightIncludesMargin(h)
     return self
 end
 
