@@ -149,7 +149,6 @@ function Grid:widgetSetReal()
             height = utils.computeSizeSpec(row.height, row.desiredHeight,
                                            heightWeightTotal, extraHeight)
 
-            col.content:setPosition(curX, curY)
 
             utils.switchFitMode(col.hFitMode,
                 function()
@@ -169,7 +168,28 @@ function Grid:widgetSetReal()
                 function()
                     col.content:setHeightIncludesMargin(height)
                 end)
-
+            
+            utils.switchHAlign(col.hAlign,
+                function()
+                    col.content.x = curX
+                end,
+                function()
+                    col.content.x = curX + (width - col.content:getFullWidth()) / 2.0
+                end,
+                function()
+                    col.content.x = curX + width - col.content:getFullWidth()
+                end)
+            utils.switchHAlign(col.vAlign,
+                function()
+                    col.content.y = curY
+                end,
+                function()
+                    col.content.y = curY + (height - col.content:getFullHeight()) / 2.0
+                end,
+                function()
+                    col.content.y = curY + height - col.content:getFullHeight()
+                end)
+            
             curX = curX + width
         end
         curY = curY + height
@@ -225,7 +245,6 @@ function Grid:col(content)
     table.insert(self:getCurGridRow().cols, {
         width = "auto",
         content = nil,
-        -- TODO: Align
         hAlign = utils.HAlign.Left,
         vAlign = utils.VAlign.Top,
         hFitMode = utils.FitMode.Expand,
@@ -250,17 +269,47 @@ function Grid:colContent(content)
     return self
 end
 
+function Grid:colAlignTopLeft() return self:colHAlignLeft():colVAlignTop() end
+
+function Grid:colAlignBottomRight() return self:colHAlignRight():colVAlignBottom() end
+
+function Grid:colAlignCenter() return self:colHAlignCenter():colVAlignCenter() end
+
+function Grid:colHAlignLeft() return self:colHAlign(utils.HAlign.Left) end
+
+function Grid:colHAlignCenter() return self:colHAlign(utils.HAlign.Center) end
+
+function Grid:colHAlignRight() return self:colHAlign(utils.HAlign.Right) end
+
+function Grid:colVAlignTop() return self:colVAlign(utils.VAlign.Top) end
+
+function Grid:colVAlignCenter() return self:colVAlign(utils.VAlign.Center) end
+
+function Grid:colVAlignBottom() return self:colVAlign(utils.VAlign.Bottom) end
+
 function Grid:colHAlign(align)
     assert(self.gridColStarted)
-    self:getCurGridCol().hAlgin = align
+    self:getCurGridCol().hAlign = align
     return self
 end
 
 function Grid:colVAlign(align)
     assert(self.gridColStarted)
-    self:getCurGridCol().vAlgin = align
+    self:getCurGridCol().vAlign = align
     return self
 end
+
+function Grid:colHFitAuto() return self:colHFitMode(utils.FitMode.Auto) end
+
+function Grid:colHFitExpand() return self:colHFitMode(utils.FitMode.Expand) end
+
+function Grid:colVFitAuto() return self:colVFitMode(utils.FitMode.Auto) end
+
+function Grid:colVFitExpand() return self:colVFitMode(utils.FitMode.Expand) end
+
+function Grid:colFitAuto() return self:colHFitAuto():colVFitAuto() end
+
+function Grid:colFitExpand() return self:colHFitExpand():colVFitExpand() end
 
 function Grid:colHFitMode(mode)
     assert(self.gridColStarted)
@@ -268,7 +317,7 @@ function Grid:colHFitMode(mode)
     return self
 end
 
-function Grid:colVFitMode(align)
+function Grid:colVFitMode(mode)
     assert(self.gridColStarted)
     self:getCurGridCol().vFitMode = mode
     return self

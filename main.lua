@@ -36,7 +36,7 @@ function love.load()
             col(d):col(d2):
         row():rowHeight("1*"):
             col(e):colWidth(100):
-            col(e2):colWidth("1*"):
+            col(e2):colWidth("1*"):colFitAuto():colAlignBottomRight():
         row():rowHeight("4*"):
             col(f):colWidth("1*")
 

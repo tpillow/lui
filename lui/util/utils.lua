@@ -7,6 +7,24 @@ utils.HAlign = { Left = 1, Center = 2, Right = 3 }
 utils.VAlign = { Top = 1, Center = 2, Bottom = 3 }
 utils.FitMode = { Auto = 1, Expand = 2 }
 
+-- Align helpers
+
+function utils.switchHAlign(align, leftHandler, centerHandler, rightHandler)
+    assert(align and leftHandler and centerHandler and rightHandler)
+    if align == utils.HAlign.Left then leftHandler()
+    elseif align == utils.HAlign.Center then centerHandler()
+    elseif align == utils.HAlign.Right then rightHandler()
+    else assert(false, "utils.switchHAlign: unknown alignment " .. align) end
+end
+
+function utils.switchVAlign(align, topHandler, centerHandler, botHandler)
+    assert(align and topHandler and centerHandler and botHandler)
+    if align == utils.VAlign.Top then topHandler()
+    elseif align == utils.VAlign.Center then centerHandler()
+    elseif align == utils.VAlign.Bottom then botHandler()
+    else assert(false, "utils.switchVAlign: unknown alignment " .. align) end
+end
+
 -- FitMode helpers
 
 function utils.switchFitMode(mode, autoHandler, expandHandler)
