@@ -150,10 +150,14 @@ function utils.class(Base)
     return Class
 end
 
+-- Object class
+
 utils.Object = utils.class(nil)
 
 function utils.Object:init()
 end
+
+-- Class helpers
 
 function utils.instanceOf(obj, Class)
     if obj == nil or Class == nil then return false end

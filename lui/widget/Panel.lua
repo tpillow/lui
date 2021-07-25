@@ -1,52 +1,40 @@
 local utils = require("lui.util.utils")
 local style = require("lui.util.style")
 local StackContainer = require("lui.layout.StackContainer")
+local Container = require("lui.layout.Container")
 local ColorRect = require("lui.widget.ColorRect")
 
-local Panel = utils.class(StackContainer)
+local Panel = utils.class(Container)
 
 function Panel:init()
-    self.backgroundColorRect = ColorRect:new()
     self.padding = { 0, 0, 0, 0 }
+    
+    self.backgroundColorRect = ColorRect:new()
 
-    self:pushChild(self.backgroundColorRect)
+    self.contentContainer = Container:new()
+    self.contentContainer:setChild(nil)
+    
+    self.stackContainer = StackContainer:new()
+    self.stackContainer:pushChild(self.backgroundColorRect)
+    self.stackContainer:pushChild(self.contentContainer)
+    self:setChild(self.stackContainer)
 
     style.applyStyle(self, "Panel")
 end
 
-function Panel:widgetSetDesires()
-    assert(self:getChildrenCount() >= 1 and self:getChildrenCount() <= 2)
+local superWidgetBuild = Panel.widgetBuild
+function Panel:widgetBuild()
+    self.contentContainer:setMargin(self.padding)
 
-    self.width = 0
-    self.height = 0
-
-    for childIdx, child in ipairs(self.children) do
-        child:widgetSetDesires()
-
-        local padW = 0
-        local padH = 0
-        if childIdx == 2 then
-            padW = self.padding[utils.MPIdx.Left] + self.padding[utils.MPIdx.Right]
-            padH = self.padding[utils.MPIdx.Top] + self.padding[utils.MPIdx.Bottom]
-        end
-        
-        if child:getFullWidth() + padW > self.width then
-            self.width = child:getFullWidth() + padW
-        end
-        if child:getFullHeight() + padH > self.height then
-            self.height = child:getFullHeight() + padH
-        end
-    end
+    superWidgetBuild(self)
 end
 
 function Panel:setContent(content)
-    if self:getContent() then self:popChild() end
-    if content then self:pushChild(content) end
+    self.contentContainer:setChild(content)
 end
 
 function Panel:getContent()
-    if self:getChildrenCount() > 1 then return self:peekChild() end
-    return nil
+    return self.contentContainer:getChild()
 end
 
 return Panel

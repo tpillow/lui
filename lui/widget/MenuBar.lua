@@ -3,40 +3,43 @@ local style = require("lui.util.style")
 local StackContainer = require("lui.layout.StackContainer")
 local ColorRect = require("lui.widget.ColorRect")
 local HStackContainer = require("lui.layout.HStackContainer")
+local Panel = require("lui.widget.Panel")
 local Label = require("lui.widget.Label")
 
-local MenuBar = utils.class(StackContainer)
+local MenuBar = utils.class(Panel)
 
+-- TODO: redo whole menu system to better allow for customixation / submenus
 -- TODO: keyboard shortcut integration
--- TODO: submenus
 -- TODO: alignments
 
 function MenuBar:init()
     self.menus = {}
-    self.hsMenus = HStackContainer:new()
-    
-    self.crBackground = ColorRect:new()
-    self.crBackground.fillColor:set(0.25, 0.25, 0.25, 1)
-    self:pushChild(self.crBackground)
 
-    self:pushChild(self.hsMenus)
+    self.hStackContainer = HStackContainer:new()
+    self:setContent(self.hStackContainer)
 
     style.applyStyle(self, "MenuBar")
 end
 
+local superWidgetBuild = MenuBar.widgetBuild
 function MenuBar:widgetBuild()
-    self.hsMenus:reset()
+    self.hStackContainer:reset()
 
     for _, menu in ipairs(self.menus) do
         -- TODO: dropdowns
+        -- TODO: stylable
         local tmp = Label:new()
-        tmp:setMargin(5)
+        tmp:setMargin(3)
         tmp.text = menu.title
-        self.hsMenus:pushChild(tmp)
+        self.hStackContainer:pushChild(tmp)
     end
+
+    superWidgetBuild(self)
 end
 
 -- Menu building helpers
+
+-- TODO: probably re-do this whole system
 
 function MenuBar:getCurMenu()
     assert(#self.menus > 0)

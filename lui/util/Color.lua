@@ -10,6 +10,10 @@ function Color:unpackRGBA()
     return self.r, self.g, self.b, self.a
 end
 
+function Color:toTableRGBA()
+    return { self.r, self.g, self.b, self.a }
+end
+
 function Color:set(r, g, b, a)
     if type(r) == "string" and utils.strStartsWith(r, "#") then
         assert(not g and not b and not a)
@@ -44,11 +48,6 @@ function Color.newFrom(r, g, b, a)
     local o = Color:new()
     o:set(r, g, b, a)
     return o
-end
-
-function Color.newFromRGBA(r, g, b, a)
-    -- TODO: Deprecate/remove this function
-    return Color.newFrom(r, g, b, a)
 end
 
 return Color

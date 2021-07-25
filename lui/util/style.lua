@@ -7,9 +7,12 @@ local cBackground = Color.newFrom("#121212")
 local cPanel = Color.newFrom("#5E5E5E")
 local cPrimary = Color.newFrom("#E1E1E1")
 local cSecondary = Color.newFrom("#BE84FC")
+local cTransparent = Color.newFrom(1, 1, 1, 0)
 
 style.defaultStyles = {
+    -- Everything here should extend from Pane
     ["Pane"] = {},
+        -- Children of layouts
         ["Container"] = {},
             ["HStackContainer"] = {},
             ["Window"] = {
@@ -21,27 +24,30 @@ style.defaultStyles = {
                 titleBarMargin = 5,
                 contentMargin = 5,
             },
-
-        ["StackContainer"] = {},
-            ["MenuBar"] = {
-                crBackground__fillColor = cSecondary,
-            },
             ["Panel"] = {
                 backgroundColorRect__ = {
                     lineColor = cPanel,
+                    drawMode = utils.DrawMode.FillOutline,
                     lineWidth = 3,
                 },
                 backgroundColorRect__fillColor = cBackground,
                 padding = { 5, 5, 5, 5 },
             },
+                ["MenuBar"] = {},
+
+        ["StackContainer"] = {},
 
         ["Grid"] = {},
 
+        -- Standalone Widgets
         ["Label"] = {
             color = cPrimary,
-            font = love.graphics.newFont(18),
+            backgroundColor = cTransparent,
         },
-        ["ColorRect"] = {},
+        ["ColorRect"] = {
+            fillColor = cPanel,
+            drawMode = utils.DrawMode.Fill,
+        },
         ["Canvas"] = {},
 }
 
@@ -66,8 +72,10 @@ function style.applyStyle(pane, styleDict)
                 local keyParts = utils.strSplit(key, "__")
                 for keyPartIdx = 1, #keyParts do
                     local keyPart = keyParts[keyPartIdx]
-                    assert(curObj[keyPart], "style.applyStyle.setProps: when parsing '" ..
-                           key .. "' unfound property: " .. keyPart)
+                    assert(curObj[keyPart],
+                           "style.applyStyle.setProps: when parsing '" ..
+                           key .. "' unfound property: " .. keyPart .. " dict: " ..
+                           styleDict)
                     if keyPartIdx < #keyParts then
                         curObj = curObj[keyPart]
                     else

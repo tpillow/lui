@@ -43,7 +43,7 @@ function Window:init()
     self.alwaysOnBottom = false
     self.alwaysFullScreen = false
 
-    self:setContent(Grid:new())
+    self:setChild(Grid:new())
     self:setWindowContent(Pane:new())
 
     style.applyStyle(self, "Window")
@@ -61,7 +61,7 @@ function Window:widgetSetDesires()
 end
 
 function Window:widgetBuild()
-    self.content:reset()
+    self.child:reset()
     if self.showTitleBar then
         self.lblTitle.text = self.title
         self.lblTitle.color = self.titleBarColor
@@ -69,12 +69,12 @@ function Window:widgetBuild()
         self.crTitleBar.fillColor:set(self.titleBarBackgroundColor)
         self.crTitleBar.lineColor:set(self.borderColor)
         self.crTitleBar.lineWidth = self.borderWidth
-        self.content:row():
+        self.child:row():
             col(self.scTitleBar):colWidth("1*")
     end
     if self.menuBar then
         assert(utils.instanceOf(self.menuBar, MenuBar))
-        self.content:row():
+        self.child:row():
             col(self.menuBar):colWidth("1*")
     end
     self.crWinContent.fillColor:set(self.backgroundColor)
@@ -83,7 +83,7 @@ function Window:widgetBuild()
     if self.scWinContent:getChildrenCount() > 1 then
         self.scWinContent:peekChild():setMargin(self.contentMargin)
     end
-    self.content:row():rowHeight("1*"):
+    self.child:row():rowHeight("1*"):
         col(self.scWinContent):colWidth("1*")
 end
 

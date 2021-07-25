@@ -1,7 +1,7 @@
 local lui = require("lui.lui")
 
 function love.load()
-    love.graphics.setFont(love.graphics.newFont(24))
+    love.graphics.setFont(love.graphics.newFont(16))
     love.window.setMode(800, 600, { resizable = true })
 
     stage = lui.Stage:new()
@@ -9,23 +9,23 @@ function love.load()
     a = lui.Grid:new()
 
     b = lui.ColorRect:new()
-    b.fillColor = lui.Color.newFromRGBA(1, 1, 1, 1)
+    b.fillColor = lui.Color.newFrom(1, 1, 1, 1)
     b:setMargin(5)
     c = lui.ColorRect:new()
     c:setMargin(20)
-    c.fillColor = lui.Color.newFromRGBA(0, 0, 1, 1)
+    c.fillColor = lui.Color.newFrom(0, 0, 1, 1)
     c2 = lui.ColorRect:new()
-    c2.fillColor = lui.Color.newFromRGBA(0, 0, 1, 1)
+    c2.fillColor = lui.Color.newFrom(0, 0, 1, 1)
     d = lui.ColorRect:new()
-    d.fillColor = lui.Color.newFromRGBA(0, 1, 1, 1)
+    d.fillColor = lui.Color.newFrom(0, 1, 1, 1)
     d2 = lui.Label:new()
     e = lui.ColorRect:new()
     e:setMargin(10, 20)
     e2 = lui.Label:new()
     e2.text = "Interesting text..."
-    e.fillColor = lui.Color.newFromRGBA(1, 1, 0, 1)
+    e.fillColor = lui.Color.newFrom(1, 1, 0, 1)
     f = lui.ColorRect:new()
-    f.fillColor = lui.Color.newFromRGBA(1, 0.5, 0.5, 1)
+    f.fillColor = lui.Color.newFrom(1, 0.5, 0.5, 1)
 
     a:
         row():
@@ -64,7 +64,7 @@ function love.load()
     win1.menuBar = mb1
     
     --w0 = lui.ColorRect:new()
-    --w0.fillColor = lui.Color.newFromRGBA(0.2, 0.2, 0.2, 0.5)
+    --w0.fillColor = lui.Color.newFrom(0.2, 0.2, 0.2, 0.5)
     --win1:setWindowContent(w0)
     w1 = lui.Label:new()
     w1.text = "Some content!"

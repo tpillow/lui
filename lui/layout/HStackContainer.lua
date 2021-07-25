@@ -7,13 +7,12 @@ local Pane = require("lui.Pane")
 local HStackContainer = utils.class(Container)
 
 function HStackContainer:init()
-    -- TODO: need to re-build when these change
-    -- TODO: content alignment stuff?
+    -- TODO: child alignment stuff?
     self.hAlign = utils.HAlign.Left
     self.vAlign = utils.VAlign.Top
 
     self.children = {}
-    self:setContent(Grid:new())
+    self:setChild(Grid:new())
 
     style.applyStyle(self, "HStackContainer")
 end
@@ -23,50 +22,53 @@ function HStackContainer:reset()
     self:widgetBuild()
 end
 
+local superWidgetBuild = HStackContainer.widgetBuild
 function HStackContainer:widgetBuild()
-    self.content:reset()
+    self.child:reset()
 
     utils.switchVAlign(self.vAlign,
         function() end,
         function()
-            self.content:row():rowHeight("1*")
+            self.child:row():rowHeight("1*")
         end,
         function()
-            self.content:row():rowHeight("1*")
+            self.child:row():rowHeight("1*")
         end)
    
-    self.content:row()
+    self.child:row()
     utils.switchHAlign(self.hAlign,
         function() end,
         function()
-            self.content:col():colWidth("1*")
+            self.child:col():colWidth("1*")
         end,
         function()
-            self.content:col():colWidth("1*")
+            self.child:col():colWidth("1*")
         end)
     
     for _, child in ipairs(self.children) do
         child:widgetBuild()
-        self.content:col(child)
+        self.child:col(child)
     end
     
     utils.switchHAlign(self.hAlign,
         function()
-            self.content:col():colWidth("1*")
+            self.child:col():colWidth("1*")
         end,
         function()
-            self.content:col():colWidth("1*")
+            self.child:col():colWidth("1*")
         end,
         function() end)
     
     utils.switchVAlign(self.vAlign,
         function()
-            self.content:row():rowHeight("1*")
+            self.child:row():rowHeight("1*")
         end,
         function()
-            self.content:row():rowHeight("1*")
+            self.child:row():rowHeight("1*")
         end,
         function() end)
+
+    superWidgetBuild(self)
 end
 
 function HStackContainer:pushChild(child)

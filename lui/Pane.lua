@@ -138,11 +138,17 @@ function Pane:setMinMaxSize(mw, mh, xw, xh)
 end
 
 function Pane:setMargin(left, top, right, bottom)
-    if top ~= nil and right ~= nil then
+    if type(left) == "table" then
+        assert(#left == 4 and not top and not right and not bottom)
+        self:setMargin(left[1], left[2], left[3], left[4])
+    elseif top ~= nil and right ~= nil then
+        assert(bottom ~= nil)
         self.margin = { left, top, right, bottom }
     elseif top ~= nil and right == nil then
+        assert(not bottom)
         self:setMargin(left, top, left, top)
     else
+        assert(not top and not right and not bottom)
         self:setMargin(left, left, left, left)
     end
     return self

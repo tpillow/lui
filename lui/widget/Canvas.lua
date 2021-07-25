@@ -6,6 +6,8 @@ local Color = require("lui.util.Color")
 local Canvas = utils.class(Pane)
 
 function Canvas:init()
+    self.clearColor = Color.newFrom(1, 1, 1, 1)
+
     self.canvas = love.graphics.newCanvas(self.width, self.height)
     self.drawFunc = nil
 
