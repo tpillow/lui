@@ -41,7 +41,7 @@ function love.load()
             col(f):colWidth("1*")
 
     win0 = lui.Window:new()
-    win0:setShowTitlebar(false)
+    win0:setShowTitleBar(false)
     win0.alwaysFullScreen = true
     win0.alwaysOnBottom = true
     win0:setWindowContent(a)
@@ -51,6 +51,16 @@ function love.load()
     win1 = lui.Window:new()
     win1:setTitle("Window #1")
     win1:setBounds(200, 200, 300, 300)
+
+    mb1 = lui.MenuBar:new()
+    mb1:menu("File"):
+            menuItem("Load"):
+            menuItem("Save"):
+            menuItem("Exit"):
+        menu("Edit"):
+            menuItem("Copy"):
+            menuItem("Paste")
+    win1:setMenuBar(mb1)
 
     w0 = lui.ColorRect:new()
     w0.fillColor = lui.Color.newFromRGBA(0.2, 0.2, 0.2, 0.5)

@@ -5,6 +5,7 @@ local Label = require("lui.widget.Label")
 local Pane = require("lui.Pane")
 local StackContainer = require("lui.layout.StackContainer")
 local ColorRect = require("lui.widget.ColorRect")
+local MenuBar = require("lui.widget.MenuBar")
 
 local Window = utils.class(Container)
 
@@ -12,22 +13,24 @@ function Window:init()
     self:setMinSize(50, 50)
     self.containerDoSelfSetDesires = false
 
-    self.scTitlebar = StackContainer:new()
+    self.scTitleBar = StackContainer:new()
     local tmp = ColorRect:new()
     tmp.fillColor:set(0.1, 0.1, 0.1, 1)
-    self.scTitlebar:pushChild(tmp)
+    self.scTitleBar:pushChild(tmp)
 
     self.lblTitle = Label:new()
     self:setTitle("Untitled")
-    self.scTitlebar:pushChild(self.lblTitle)
+    self.scTitleBar:pushChild(self.lblTitle)
 
     self.scWinContent = StackContainer:new()
     tmp = ColorRect:new()
     tmp.fillColor:set(0.5, 0.5, 0.5, 1)
     self.scWinContent:pushChild(tmp)
 
+    self.menuBar = nil
+
     self.dragging = false
-    self._showTitlebar = true
+    self._showTitleBar = true
     self.alwaysOnBottom = false
     self.alwaysFullScreen = false
 
@@ -42,22 +45,33 @@ function Window:widgetSetDesires()
 
     if self.alwaysFullScreen then
         self:setPosition(0, 0)
-        self:setSizeIncludesMargin(love.graphics.getWidth(), love.graphics.getHeight())
+        self:setSizeIncludesMargin(love.graphics.getWidth(),
+                                   love.graphics.getHeight())
     end
 end
 
 function Window:buildGrid()
     self.content:reset()
-    if self._showTitlebar then
+    if self._showTitleBar then
         self.content:row():
-            col(self.scTitlebar):colWidth("1*")
+            col(self.scTitleBar):colWidth("1*")
+    end
+    if self.menuBar then
+        self.content:row():
+            col(self.menuBar):colWidth("1*")
     end
     self.content:row():rowHeight("1*"):
         col(self.scWinContent):colWidth("1*")
 end
 
-function Window:setShowTitlebar(show)
-    self._showTitlebar = show
+function Window:setShowTitleBar(show)
+    self._showTitleBar = show
+    self:buildGrid()
+end
+
+function Window:setMenuBar(menuBar)
+    assert(not menuBar or utils.instanceOf(menuBar, MenuBar))
+    self.menuBar = menuBar
     self:buildGrid()
 end
 

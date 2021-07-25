@@ -22,7 +22,7 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
     - [x] Window
     - [x] Label
     - [x] Canvas
-    - [ ] ComboBox
-    - [ ] Menubar
+    - [ ] DropDown
+    - [ ] MenuBar
     - [ ] Button
 

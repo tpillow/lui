@@ -231,7 +231,6 @@ function Grid:row()
 end
 
 function Grid:rowHeight(spec)
-    assert(#self.gridRows > 0)
     self:getCurGridRow().height = spec
     return self
 end
@@ -239,8 +238,6 @@ end
 -- Grid col
 
 function Grid:col(content)
-    assert(#self.gridRows > 0)
-
     self.gridColStarted = true
     table.insert(self:getCurGridRow().cols, {
         width = "auto",
@@ -256,13 +253,11 @@ function Grid:col(content)
 end
 
 function Grid:colWidth(spec)
-    assert(self.gridColStarted)
     self:getCurGridCol().width = spec
     return self
 end
 
 function Grid:colContent(content)
-    assert(self.gridColStarted)
     assert(utils.instanceOf(content, Pane))
     self:getCurGridCol().content = content
     content.parent = self
@@ -288,13 +283,11 @@ function Grid:colVAlignCenter() return self:colVAlign(utils.VAlign.Center) end
 function Grid:colVAlignBottom() return self:colVAlign(utils.VAlign.Bottom) end
 
 function Grid:colHAlign(align)
-    assert(self.gridColStarted)
     self:getCurGridCol().hAlign = align
     return self
 end
 
 function Grid:colVAlign(align)
-    assert(self.gridColStarted)
     self:getCurGridCol().vAlign = align
     return self
 end
@@ -312,13 +305,11 @@ function Grid:colFitAuto() return self:colHFitAuto():colVFitAuto() end
 function Grid:colFitExpand() return self:colHFitExpand():colVFitExpand() end
 
 function Grid:colHFitMode(mode)
-    assert(self.gridColStarted)
     self:getCurGridCol().hFitMode = mode 
     return self
 end
 
 function Grid:colVFitMode(mode)
-    assert(self.gridColStarted)
     self:getCurGridCol().vFitMode = mode
     return self
 end
