@@ -74,6 +74,7 @@ end
 
 function StackContainer:popChild()
     assert(#self.children > 0)
+    self:peekChild().parent = nil
     table.remove(self.children, #self.children)
 end
 

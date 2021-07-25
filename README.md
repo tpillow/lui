@@ -8,9 +8,10 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
     - [x] Pane
     - [x] Window Stage
     - [x] Input
-    - [ ] Global Style System
+    - [x] Global Style System
     - [ ] JSON UI Save/Load
 - [ ] Layouts
+    - [ ] Padding Support
     - [x] Grid
     - [x] Container
     - [x] StackContainer
@@ -22,6 +23,7 @@ A minimalistic Love2D GUI library, written entirely in Love2D.
     - [x] Window
     - [x] Label
     - [x] Canvas
+    - [ ] Panel
     - [ ] DropDown
     - [ ] MenuBar
     - [ ] Button

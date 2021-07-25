@@ -26,6 +26,7 @@ style.defaultStyles = {
             ["MenuBar"] = {
                 crBackground__fillColor = cSecondary,
             },
+            ["Panel"] = {},
 
         ["Grid"] = {},
 

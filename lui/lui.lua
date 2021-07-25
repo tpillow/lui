@@ -16,6 +16,7 @@ lui.Label = require("lui.widget.Label")
 lui.ColorRect = require("lui.widget.ColorRect")
 lui.Canvas = require("lui.widget.Canvas")
 lui.MenuBar = require("lui.widget.MenuBar")
+lui.Panel = require("lui.widget.Panel")
 
 -- Utils
 lui.utils = require("lui.util.utils")
