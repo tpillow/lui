@@ -1,17 +1,24 @@
 # Lui
 
-A minimalistic Love2D GUI library.
-
-A single grid layout - easy and powerful.
-Custom widgets - quick and stylish.
+A minimalistic Love2D GUI library, written entirely in Love2D.
 
 ## Features
 
-- [ ] Core
-    - [ ] Pane
-        - [ ] Grid Layout System
-- [ ] Widgets
+- [x] Core
+    - [x] Pane
+    - [x] Window Stage
+    - [x] Input
+- [p] Layouts
+    - [x] Grid
+    - [x] Container
+    - [x] StackContainer
+    - [ ] HStackContainer
+    - [ ] VStackContainer
+    - [ ] ScrollContainer
+- [p] Widgets
     - [x] ColorRect
-    - [ ] Window
-    - [ ] Label
+    - [x] Window
+    - [p] Label
     - [ ] Button
+    - [ ] Canvas
+
