@@ -19,25 +19,17 @@ style.defaultStyles = {
         -- Children of layouts
         Container = {},
             HStackContainer = {},
-            Window = {
-                borderColor = cPanel:clone(),
-                borderWidth = 2,
-                titleBarBackgroundColor = cBackground:clone(),
-                titleBarColor = cPrimary:clone(),
-                backgroundColor = cBackground:clone(),
-                titleBarMargin = 5,
-                contentMargin = 5,
-            },
             Panel = {
                 backgroundColorRect__ = {
-                    lineColor = cPanel:clone(),
-                    fillColor = cBackground:clone(),
+                    lineColor = cPanel,
+                    fillColor = cBackground,
                     drawMode = utils.DrawMode.FillOutline,
                     lineWidth = 3,
-                    cornerRadius = 5,
+                    cornerRadius = 0,
                 },
                 padding = { 5, 5, 5, 5 },
             },
+                Window = {},
                 MenuBar = {},
 
         StackContainer = {},
@@ -46,11 +38,11 @@ style.defaultStyles = {
 
         -- Standalone Widgets
         Label = {
-            color = cPrimary:clone(),
-            backgroundColor = cTransparent:clone(),
+            color = cPrimary,
+            backgroundColor = cTransparent,
         },
         ColorRect = {
-            fillColor = cPanel:clone(),
+            fillColor = cPanel,
             drawMode = utils.DrawMode.Fill,
         },
         Canvas = {},
@@ -62,6 +54,7 @@ function style.getDefaultStyle(key)
     return style.defaultStyles[key]
 end
 
+-- This would allow us to remove clone() from Color, since it'd happena automatically
 function style.applyStyle(pane, styleDict)
     local function setProps(obj, dict)
         assert(type(dict) == "table",
@@ -84,6 +77,7 @@ function style.applyStyle(pane, styleDict)
                     if keyPartIdx < #keyParts then
                         curObj = curObj[keyPart]
                     else
+                        val = utils.deepCopy(val)
                         curObj[keyPart] = val
                     end
                 end

@@ -68,7 +68,6 @@ function StackContainer:pushChild(child)
     assert(utils.instanceOf(child, Pane))
     table.insert(self.children, child)
     child.parent = self
-    child:widgetBuild()
     self:widgetBuild()
 end
 

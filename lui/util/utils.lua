@@ -38,30 +38,27 @@ end
 -- Size spec functions
 
 function utils.computeSizeSpec(spec, autoSize, totalWeight, extraSpace)
-    local ret = -1
-    utils.switchSizeSpec(spec,
+    return utils.switchSizeSpec(spec,
         function()
-            ret = autoSize
+            return autoSize
         end,
         function(weight)
             local weight = utils.getSizeSpecWeight(spec)
-            ret = (weight / totalWeight) * extraSpace
+            return (weight / totalWeight) * extraSpace
         end,
         function(pixels)
-            ret = pixels
+            return pixels
         end)
-    assert(ret >= 0, "utils.computeSizeSpec: return computation must be >= 0")
-    return ret
 end
 
 function utils.switchSizeSpec(spec, autoHandler, weightHandler, pixelHandler)
     assert(spec and autoHandler and weightHandler and pixelHandler)
     if utils.isAutoSizeSpec(spec) then
-        autoHandler()
+        return autoHandler()
     elseif utils.isWeightSizeSpec(spec) then
-        weightHandler(utils.getSizeSpecWeight(spec))
+        return weightHandler(utils.getSizeSpecWeight(spec))
     elseif utils.isPixelSizeSpec(spec) then
-        pixelHandler(utils.getSizeSpecPixel(spec))
+        return pixelHandler(utils.getSizeSpecPixel(spec))
     else
         assert(false, "utils.switchSizeSpec: unparseable size spec: " .. spec)
     end
@@ -86,6 +83,18 @@ end
 function utils.getSizeSpecPixel(spec)
     assert(utils.isPixelSizeSpec(spec))
     return tonumber(spec)
+end
+
+-- Table functions
+
+function utils.deepCopy(obj, seen)
+    if type(obj) ~= "table" then return obj end
+    if seen and seen[obj] then return seen[obj] end
+    local s = seen or {}
+    local res = setmetatable({}, getmetatable(obj))
+    s[obj] = res
+    for k, v in pairs(obj) do res[utils.deepCopy(k, s)] = utils.deepCopy(v, s) end
+    return res
 end
 
 -- Object extension functions

@@ -44,33 +44,32 @@ function love.load()
     win0.showTitleBar = false
     win0.alwaysFullScreen = true
     win0.alwaysOnBottom = true
-    win0.borderWidth = 0
     win0:setWindowContent(a)
 
     stage:addChild(win0)
 
-    win1 = lui.Window:new()
-    win1.title = "Window #1"
-    win1:setBounds(200, 200, 300, 300)
-
-    mb1 = lui.MenuBar:new()
-    mb1:menu("File"):
-            menuItem("Load"):
-            menuItem("Save"):
-            menuItem("Exit"):
-        menu("Edit"):
-            menuItem("Copy"):
-            menuItem("Paste")
-    win1.menuBar = mb1
+    --win1 = lui.Window:new()
+    --win1.title = "Window #1"
+    --win1:setBounds(200, 200, 300, 300)
+    
+    --mb1 = lui.MenuBar:new()
+    --mb1:menu("File"):
+    --        menuItem("Load"):
+    --        menuItem("Save"):
+    --        menuItem("Exit"):
+    --    menu("Edit"):
+    --        menuItem("Copy"):
+    --        menuItem("Paste")
+    --win1.menuBar = mb1
     
     --w0 = lui.ColorRect:new()
     --w0.fillColor = lui.Color.newFrom(0.2, 0.2, 0.2, 0.5)
     --win1:setWindowContent(w0)
-    w1 = lui.Label:new()
-    w1.text = "Some content!"
-    win1:setWindowContent(w1)
+    --w1 = lui.Label:new()
+    --w1.text = "Some content!"
+    --win1:setWindowContent(w1)
 
-    stage:addChild(win1)
+    --stage:addChild(win1)
 end
 
 function love.update(dt)

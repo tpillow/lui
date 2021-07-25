@@ -6,9 +6,9 @@ local Container = utils.class(Pane)
 
 function Container:init()
     self.containerDoSelfSetDesires = true
-    
+   
     self:setChild(nil)
-
+    
     style.applyStyle(self, "Container")
 end
 
@@ -47,7 +47,6 @@ function Container:setChild(child)
     self.child = child or Pane:new()
     assert(utils.instanceOf(self.child, Pane))
     self.child.parent = self
-    self.child:widgetBuild()
     self:widgetBuild()
 end
 

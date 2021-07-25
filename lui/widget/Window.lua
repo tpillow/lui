@@ -1,52 +1,57 @@
 local utils = require("lui.util.utils")
 local style = require("lui.util.style")
-local Container = require("lui.layout.Container")
 local Grid = require("lui.layout.Grid")
 local Label = require("lui.widget.Label")
-local Pane = require("lui.Pane")
-local StackContainer = require("lui.layout.StackContainer")
-local ColorRect = require("lui.widget.ColorRect")
+local Panel = require("lui.widget.Panel")
+local Container = require("lui.layout.Container")
 local MenuBar = require("lui.widget.MenuBar")
-local Color = require("lui.util.Color")
 
-local Window = utils.class(Container)
+local Window = utils.class(Panel)
 
 function Window:init()
-    self:setMinSize(50, 50)
-    self.containerDoSelfSetDesires = false
-
-    self.scTitleBar = StackContainer:new()
-    self.crTitleBar = ColorRect:new()
-    self.scTitleBar:pushChild(self.crTitleBar)
-
-    self.lblTitle = Label:new()
     self.title = "Untitled"
-    self.scTitleBar:pushChild(self.lblTitle)
 
-    self.scWinContent = StackContainer:new()
-    self.crWinContent = ColorRect:new()
-    self.scWinContent:pushChild(self.crWinContent)
+    self.titleBarPanel = Panel:new()
+    self.titleLabel = Label:new()
+    self.titleBarPanel:setContent(self.titleLabel)
 
-    self.borderColor = Color.newFrom(0, 0, 0, 1)
-    self.titleBarBackgroundColor = Color.newFrom(0.5, 0.5, 0.5, 1)
-    self.titleBarColor = Color.newFrom(1, 1, 1, 1)
-    self.backgroundColor = Color.newFrom(1, 1, 1, 1)
-    self.borderWidth = 1
-    self.titleBarMargin = 0
-    self.contentMargin = 0
+    self.windowContentContainer = Container:new()
 
+    -- TODO: resizable
     self.menuBar = nil
-
-    self.canDrag = true
-    self.dragging = false
     self.showTitleBar = true
     self.alwaysOnBottom = false
     self.alwaysFullScreen = false
+    self.canDrag = true
+    self.dragging = false
+    
+    self.grid = Grid:new()
+    self:setContent(self.grid)
 
-    self:setChild(Grid:new())
-    self:setWindowContent(Pane:new())
-
+    self.containerDoSelfSetDesires = false
     style.applyStyle(self, "Window")
+end
+
+local superWidgetBuild = Window.widgetBuild
+function Window:widgetBuild()
+    self.grid:reset()
+
+    if self.showTitleBar then
+        self.titleLabel.text = self.title
+        self.grid:row():
+            col(self.titleBarPanel):colWidth("1*")
+    end
+
+    if self.menuBar then
+        assert(utils.instanceOf(self.menuBar, MenuBar))
+        self.grid:row():
+            col(self.menuBar):colWidth("1*")
+    end
+
+    self.grid:row():rowHeight("1*"):
+        col(self.windowContentContainer):colWidth("1*")
+
+    superWidgetBuild(self)
 end
 
 local superWidgetSetDesires = Window.widgetSetDesires
@@ -60,64 +65,44 @@ function Window:widgetSetDesires()
     end
 end
 
-function Window:widgetBuild()
-    self.child:reset()
-    if self.showTitleBar then
-        self.lblTitle.text = self.title
-        self.lblTitle.color = self.titleBarColor
-        self.lblTitle:setMargin(self.titleBarMargin)
-        self.crTitleBar.fillColor:set(self.titleBarBackgroundColor)
-        self.crTitleBar.lineColor:set(self.borderColor)
-        self.crTitleBar.lineWidth = self.borderWidth
-        self.child:row():
-            col(self.scTitleBar):colWidth("1*")
-    end
-    if self.menuBar then
-        assert(utils.instanceOf(self.menuBar, MenuBar))
-        self.child:row():
-            col(self.menuBar):colWidth("1*")
-    end
-    self.crWinContent.fillColor:set(self.backgroundColor)
-    self.crWinContent.lineColor:set(self.borderColor)
-    self.crWinContent.lineWidth = self.borderWidth
-    if self.scWinContent:getChildrenCount() > 1 then
-        self.scWinContent:peekChild():setMargin(self.contentMargin)
-    end
-    self.child:row():rowHeight("1*"):
-        col(self.scWinContent):colWidth("1*")
+function Window:setWindowContent(content)
+    self.windowContentContainer:setChild(content)
 end
 
-function Window:setWindowContent(winContent)
-    if self.scWinContent:getChildrenCount() > 1 then self.scWinContent:popChild() end
-    if winContent then self.scWinContent:pushChild(winContent) end
+function Window:getWindowContent()
+    return self.windowContentContainer:getChild()
 end
 
 -- Window moving
 
+local superMousepressed = Window.mousepressed
 function Window:mousepressed(x, y, button, istouch, presses)
     if self:globalCoordInBounds(x, y) then
-        if self.canDrag and self.scTitleBar:globalCoordInBounds(x, y) then
+        if self.canDrag and self.titleBarPanel:globalCoordInBounds(x, y) then
+            print("===") -- TODO
             self.dragging = true        
             return true
         end
     end
-    return false
+    return superMousepressed(self, x, y, button, istouch, presses)
 end
 
+local superMousemoved = Window.mousemoved
 function Window:mousemoved(x, y, dx, dy, istouch)
     if self.dragging then
         self:setPosition(self.x + dx, self.y + dy)
         return true
     end
-    return false
+    return superMousemoved(self, x, y, dx, dy, istouch)
 end
 
+local superMousereleased = Window.mousereleased
 function Window:mousereleased(x, y, button, istouch, presses)
     if self.dragging then
         self.dragging = false
         return true
     end
-    return false
+    return superMousereleased(self, x, y, button, istouch, presses)
 end
 
 return Window

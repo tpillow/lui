@@ -125,30 +125,33 @@ end
 function Pane:setMinSize(w, h)
     self.minWidth = w
     self.minHeight = h
+    return self
 end
 
 function Pane:setMaxSize(w, h)
     self.maxWidth = w
     self.maxHeight = h
+    return self
 end
 
 function Pane:setMinMaxSize(mw, mh, xw, xh)
     self:setMinSize(mw, mh)
     self:setMaxSize(xw, xh)
+    return self
 end
 
 function Pane:setMargin(left, top, right, bottom)
     if type(left) == "table" then
-        assert(#left == 4 and not top and not right and not bottom)
+        assert(#left == 4 and top == nil and right == nil and bottom == nil)
         self:setMargin(left[1], left[2], left[3], left[4])
     elseif top ~= nil and right ~= nil then
-        assert(bottom ~= nil)
+        assert(left ~= nil and bottom ~= nil)
         self.margin = { left, top, right, bottom }
     elseif top ~= nil and right == nil then
-        assert(not bottom)
+        assert(left ~= nil and bottom == nil)
         self:setMargin(left, top, left, top)
     else
-        assert(not top and not right and not bottom)
+        assert(left ~= nil and top == nil and right == nil and bottom == nil)
         self:setMargin(left, left, left, left)
     end
     return self
