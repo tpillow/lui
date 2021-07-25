@@ -318,7 +318,7 @@ function Grid:colFitAuto() return self:colHFitAuto():colVFitAuto() end
 function Grid:colFitExpand() return self:colHFitExpand():colVFitExpand() end
 
 function Grid:colHFitMode(mode)
-    self:getCurGridCol().hFitMode = mode 
+    self:getCurGridCol().hFitMode = mode
     return self
 end
 

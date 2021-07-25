@@ -43,7 +43,6 @@ function utils.computeSizeSpec(spec, autoSize, totalWeight, extraSpace)
             return autoSize
         end,
         function(weight)
-            local weight = utils.getSizeSpecWeight(spec)
             return (weight / totalWeight) * extraSpace
         end,
         function(pixels)

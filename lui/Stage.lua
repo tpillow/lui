@@ -1,5 +1,4 @@
 local utils = require("lui.util.utils")
-local Pane = require("lui.Pane")
 local Window = require("lui.widget.Window")
 
 local Stage = utils.class()

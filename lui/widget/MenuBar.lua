@@ -1,7 +1,5 @@
 local utils = require("lui.util.utils")
 local style = require("lui.util.style")
-local StackContainer = require("lui.layout.StackContainer")
-local ColorRect = require("lui.widget.ColorRect")
 local HStackContainer = require("lui.layout.HStackContainer")
 local Panel = require("lui.widget.Panel")
 local Label = require("lui.widget.Label")

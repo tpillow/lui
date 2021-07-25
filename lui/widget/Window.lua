@@ -79,7 +79,6 @@ local superMousepressed = Window.mousepressed
 function Window:mousepressed(x, y, button, istouch, presses)
     if self:globalCoordInBounds(x, y) then
         if self.canDrag and self.titleBarPanel:globalCoordInBounds(x, y) then
-            print("===") -- TODO
             self.dragging = true        
             return true
         end
