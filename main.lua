@@ -6,8 +6,9 @@ function love.load()
 
     stage = lui.Stage:new()
 
-    a = lui.Grid:new()
+    --a = lui.Grid:new()
 
+    --[[
     b = lui.ColorRect:new()
     b.fillColor = lui.Color.newFrom(1, 1, 1, 1)
     b:setMargin(5)
@@ -39,19 +40,26 @@ function love.load()
             col(e2):colWidth("1*"):colFitAuto():colAlignBottomRight():
         row():rowHeight("4*"):
             col(f):colWidth("1*")
+    --]]
 
+    print("Creating win0")
     win0 = lui.Window:new()
     win0.showTitleBar = false
     win0.alwaysFullScreen = true
     win0.alwaysOnBottom = true
-    win0:setWindowContent(a)
+    --win0:setWindowContent(a)
 
     stage:addChild(win0)
 
-    --win1 = lui.Window:new()
-    --win1.title = "Window #1"
-    --win1:setBounds(200, 200, 300, 300)
-    
+    --[[
+    print("Creating win1")
+    win1 = lui.Window:new()
+    win1.title = "Window #1"
+    win1:setBounds(200, 200, 300, 300)
+
+    stage:addChild(win1)
+    --]]
+
     --mb1 = lui.MenuBar:new()
     --mb1:menu("File"):
     --        menuItem("Load"):

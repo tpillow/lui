@@ -7,14 +7,22 @@ local Grid = utils.class(Pane)
 -- Constructor
 
 function Grid:init()
-    self:reset()
+    self:resetGrid()
 
     style.applyStyle(self, "Grid")
 end
 
 -- Grid general helpers
 
-function Grid:reset()
+function Grid:resetGrid()
+    if self.gridRows then
+        for _, row in ipairs(self.gridRows) do
+            for _, col in ipairs(row.cols) do
+                col.content.parent = nil
+            end
+        end
+    end
+
     self.gridRows = {}
     self.gridColStarted = false
 end
@@ -272,8 +280,6 @@ function Grid:colContent(content)
     assert(utils.instanceOf(content, Pane))
     self:getCurGridCol().content = content
     content.parent = self
-    content:widgetBuild()
-    self:widgetBuild()
     return self
 end
 

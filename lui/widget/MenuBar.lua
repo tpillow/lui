@@ -21,7 +21,7 @@ end
 
 local superWidgetBuild = MenuBar.widgetBuild
 function MenuBar:widgetBuild()
-    self.hStackContainer:reset()
+    self.hStackContainer:resetHStackContainer()
 
     for _, menu in ipairs(self.menus) do
         -- TODO: dropdowns

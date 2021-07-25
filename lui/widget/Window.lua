@@ -2,9 +2,9 @@ local utils = require("lui.util.utils")
 local style = require("lui.util.style")
 local Grid = require("lui.layout.Grid")
 local Label = require("lui.widget.Label")
-local Panel = require("lui.widget.Panel")
 local Container = require("lui.layout.Container")
 local MenuBar = require("lui.widget.MenuBar")
+local Panel = require("lui.widget.Panel")
 
 local Window = utils.class(Panel)
 
@@ -25,30 +25,35 @@ function Window:init()
     self.canDrag = true
     self.dragging = false
     
-    self.grid = Grid:new()
-    self:setContent(self.grid)
+    self.mainGrid = Grid:new()
+    self:setContent(self.mainGrid)
 
+    self:setMinSize(100, 100)
     self.containerDoSelfSetDesires = false
+
+    self:setWindowContent(nil)
+    
     style.applyStyle(self, "Window")
 end
 
 local superWidgetBuild = Window.widgetBuild
 function Window:widgetBuild()
-    self.grid:reset()
+    print("Window:widgetBuild()", self, self.mainGrid, self.windowContentContainer)
+    self.mainGrid:resetGrid()
 
     if self.showTitleBar then
         self.titleLabel.text = self.title
-        self.grid:row():
+        self.mainGrid:row():
             col(self.titleBarPanel):colWidth("1*")
     end
 
     if self.menuBar then
         assert(utils.instanceOf(self.menuBar, MenuBar))
-        self.grid:row():
+        self.mainGrid:row():
             col(self.menuBar):colWidth("1*")
     end
 
-    self.grid:row():rowHeight("1*"):
+    self.mainGrid:row():rowHeight("1*"):
         col(self.windowContentContainer):colWidth("1*")
 
     superWidgetBuild(self)

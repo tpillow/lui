@@ -17,14 +17,22 @@ function HStackContainer:init()
     style.applyStyle(self, "HStackContainer")
 end
 
-function HStackContainer:reset()
+function HStackContainer:resetHStackContainer()
     self.children = {}
     self:widgetBuild()
 end
 
+function HStackContainer:widgetDraw()
+    for _, child in ipairs(self.children) do
+        child:draw()
+    end
+
+    self:drawDebugBounds()
+end
+
 local superWidgetBuild = HStackContainer.widgetBuild
 function HStackContainer:widgetBuild()
-    self.child:reset()
+    self.child:resetGrid()
 
     utils.switchVAlign(self.vAlign,
         function() end,
