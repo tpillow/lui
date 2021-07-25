@@ -30,6 +30,7 @@ end
 function Container:setContent(content)
     if self.content then self.content.parent = nil end
     self.content = content or Pane:new()
+    assert(utils.instanceOf(self.content, Pane))
     self.content.parent = self
 end
 

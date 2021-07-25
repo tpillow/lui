@@ -237,7 +237,7 @@ end
 
 function Grid:colContent(content)
     assert(self.gridColStarted)
-    assert(content)
+    assert(utils.instanceOf(content, Pane))
     self:getCurGridCol().content = content
     content.parent = self
     return self

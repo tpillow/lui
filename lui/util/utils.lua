@@ -94,10 +94,15 @@ function utils.class(Base)
     local Class = {}
     if Base then Class = Base:new() end
 
+    Class.Class = Class
+    Class.Base = Base
+
     function Class:new()
         local obj = {}
         setmetatable(obj, self)
         self.__index = self
+        obj.Class = Class
+        obj.Base = Base
         obj:init()
         return obj
     end
@@ -108,6 +113,13 @@ end
 utils.Object = utils.class(nil)
 
 function utils.Object:init()
+end
+
+function utils.instanceOf(obj, Class)
+    if obj == nil or Class == nil then return false end
+    if obj.Class == Class then return true end
+    if obj.Base then return utils.instanceOf(obj.Base, Class) end
+    return false
 end
 
 return utils

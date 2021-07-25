@@ -87,7 +87,7 @@ end
 -- Children functions
 
 function Stage:addChild(child)
-    assert(child)
+    assert(utils.instanceOf(child, Pane))
     table.insert(self.children, child)
 end
 
