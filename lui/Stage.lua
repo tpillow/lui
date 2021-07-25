@@ -16,6 +16,9 @@ function Stage:update(dt)
 
     for _, child in ipairs(self.children) do
         child:update(dt)
+
+        child.x = utils.clamp(child.x, 0, love.graphics.getWidth() - child.width)
+        child.y = utils.clamp(child.y, 0, love.graphics.getHeight() - child.height)
     end
 end
 
