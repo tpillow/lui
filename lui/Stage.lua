@@ -1,5 +1,6 @@
 local utils = require("lui.util.utils")
 local Pane = require("lui.Pane")
+local Window = require("lui.widget.Window")
 
 local Stage = utils.class()
 
@@ -87,7 +88,7 @@ end
 -- Children functions
 
 function Stage:addChild(child)
-    assert(utils.instanceOf(child, Pane))
+    assert(utils.instanceOf(child, Window))
     table.insert(self.children, child)
 end
 

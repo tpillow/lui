@@ -7,7 +7,6 @@ local Grid = utils.class(Pane)
 
 function Grid:init()
     self:reset()
-    self.fillParent = false
 end
 
 -- Grid general helpers
@@ -82,17 +81,8 @@ function Grid:widgetSetDesires()
     end
 
     -- Set our desires
-    if self.fillParent then
-        self:setPosition(0, 0)
-        if self.parent then
-            self:setSizeIncludesMargin(self.parent.width, self.parent.height)
-        else
-            self:setSizeIncludesMargin(love.graphics.getWidth(), love.graphics.getHeight())
-        end
-    else
-        self.width = desiredWidth
-        self.height = desiredHeight
-    end
+    self.width = desiredWidth
+    self.height = desiredHeight
 end
 
 function Grid:widgetSetReal()

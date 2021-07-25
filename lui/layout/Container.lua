@@ -5,6 +5,7 @@ local Container = utils.class(Pane)
 
 function Container:init()
     self:setContent(nil)
+    self.containerDoSelfSetDesires = true
 end
 
 function Container:widgetUpdate(dt)
@@ -20,8 +21,10 @@ end
 function Container:widgetSetDesires()
     self.content:widgetSetDesires()
 
-    self.width = self.content.width
-    self.height = self.content.height
+    if self.containerDoSelfSetDesires then
+        self.width = self.content.width
+        self.height = self.content.height
+    end
 end
 
 function Container:widgetSetReal()

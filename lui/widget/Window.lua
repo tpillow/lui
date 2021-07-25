@@ -9,9 +9,12 @@ local ColorRect = require("lui.widget.ColorRect")
 local Window = utils.class(Container)
 
 function Window:init()
+    self:setMinSize(50, 50)
+    self.containerDoSelfSetDesires = false
+
     self.scTitlebar = StackContainer:new()
     local tmp = ColorRect:new()
-    tmp.fillColor:set(0, 0, 0, 0.95)
+    tmp.fillColor:set(0.1, 0.1, 0.1, 1)
     self.scTitlebar:pushChild(tmp)
 
     self.lblTitle = Label:new()
@@ -20,23 +23,41 @@ function Window:init()
 
     self.scWinContent = StackContainer:new()
     tmp = ColorRect:new()
-    tmp.fillColor:set(0, 0, 0, 0.2)
+    tmp.fillColor:set(0.5, 0.5, 0.5, 1)
     self.scWinContent:pushChild(tmp)
 
     self.dragging = false
+    self._showTitlebar = true
+    self.alwaysFullScreen = false
 
     self:setContent(Grid:new())
-    self.content.fillParent = true
     self:setWindowContent(Pane:new())
     self:buildGrid()
 end
 
+local superWidgetSetDesires = Window.widgetSetDesires
+function Window:widgetSetDesires()
+    superWidgetSetDesires(self)
+
+    if self.alwaysFullScreen then
+        self:setPosition(0, 0)
+        self:setSizeIncludesMargin(love.graphics.getWidth(), love.graphics.getHeight())
+    end
+end
+
 function Window:buildGrid()
     self.content:reset()
-    self.content:row():
-        col(self.scTitlebar):colWidth("1*"):
-    row():rowHeight("1*"):
+    if self._showTitlebar then
+        self.content:row():
+            col(self.scTitlebar):colWidth("1*")
+    end
+    self.content:row():rowHeight("1*"):
         col(self.scWinContent):colWidth("1*")
+end
+
+function Window:setShowTitlebar(show)
+    self._showTitlebar = show
+    self:buildGrid()
 end
 
 function Window:setWindowContent(winContent)

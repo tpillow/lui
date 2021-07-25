@@ -7,9 +7,6 @@ function love.load()
     stage = lui.Stage:new()
 
     a = lui.Grid:new()
-    a:setBounds(50, 50, 600, 500)
-    a:setMargin(10)
-    a.fillParent = true
 
     b = lui.ColorRect:new()
     b.fillColor = lui.Color.newFromRGBA(1, 1, 1, 1)
@@ -43,7 +40,12 @@ function love.load()
         row():rowHeight("4*"):
             col(f):colWidth("1*")
 
-    stage:addChild(a)
+    win0 = lui.Window:new()
+    win0:setShowTitlebar(false)
+    win0.alwaysFullScreen = true
+    win0:setWindowContent(a)
+
+    stage:addChild(win0)
 
     win1 = lui.Window:new()
     win1:setTitle("Window #1")

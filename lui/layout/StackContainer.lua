@@ -58,6 +58,7 @@ function StackContainer:popChild()
 end
 
 -- Input methods
+-- TODO: These should loop opposite (last element first, since it's topmost)
 
 function StackContainer:mousepressed(x, y, button, istouch, presses)
     for _, child in ipairs(self.children) do
