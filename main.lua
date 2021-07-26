@@ -40,7 +40,6 @@ function love.load()
         row():rowHeight("4*"):
             col(f):colWidth("1*")
 
-    print("Creating win0")
     win0 = lui.Window:new()
     win0.showTitleBar = false
     win0.alwaysFullScreen = true
@@ -49,7 +48,6 @@ function love.load()
 
     stage:addChild(win0)
 
-    print("Creating win1")
     win1 = lui.Window:new()
     win1.title = "Window #1"
     win1:setBounds(200, 200, 300, 300)

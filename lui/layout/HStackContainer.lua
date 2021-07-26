@@ -12,6 +12,7 @@ function HStackContainer:init()
     self.vAlign = utils.VAlign.Top
 
     self.mainGrid = Grid:new()
+    self.mainGrid.parent = self
     self:addInputListener(self.mainGrid)
     self:resetHStackContainer()
 

@@ -13,6 +13,7 @@ function Window:init()
     self.title = "Untitled"
 
     self.panel = Panel:new()
+    self.panel.parent = self
     self:addInputListener(self.panel)
 
     self.titleBarPanel = Panel:new()
@@ -70,10 +71,8 @@ end
 
 function Window:widgetSetDesires()
     self.panel:widgetSetDesires()
-
-    -- TODO: the no set desires thing...maybe this is fine?
-    -- self:setSize(self.panel:getFullWidth(), self.panel:getFullHeight())
-    
+   
+    -- Do not set our desires based on content, since we are a window
     if self.alwaysFullScreen then
         self:setPosition(0, 0)
         self:setSizeIncludesMargin(love.graphics.getWidth(),

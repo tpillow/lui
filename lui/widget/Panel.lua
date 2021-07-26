@@ -16,6 +16,7 @@ function Panel:init()
     self.contentContainer:setChild(nil)
     
     self.stackContainer = StackContainer:new()
+    self.stackContainer.parent = self
     self.stackContainer:pushChild(self.backgroundColorRect)
     self.stackContainer:pushChild(self.contentContainer)
 

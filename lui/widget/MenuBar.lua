@@ -15,6 +15,7 @@ function MenuBar:init()
     self.menus = {}
 
     self.panel = Panel:new()
+    self.panel.parent = self
     self.hStackContainer = HStackContainer:new()
     self.panel:setContent(self.hStackContainer)
 
