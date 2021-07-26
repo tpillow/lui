@@ -65,9 +65,15 @@ function love.load()
     w0 = lui.ColorRect:new()
     w0.fillColor = lui.Color.newFrom(0.2, 0.2, 0.2, 0.5)
     win1:setWindowContent(w0)
+
+    w1c = lui.VStackContainer:new()
+
     w1 = lui.Label:new()
     w1.text = "Some content!"
-    win1:setWindowContent(w1)
+    w1c:pushChild(w1)
+    w1c:pushChild(lui.Label:new())
+
+    win1:setWindowContent(w1c)
 
     stage:addChild(win1)
 end

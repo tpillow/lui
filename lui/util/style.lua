@@ -23,6 +23,9 @@ style.defaultStyles = {
     HStackContainer = {
         vAlign = utils.VAlign.Center,
     },
+    VStackContainer = {
+        vAlign = utils.VAlign.Center,
+    },
 
     Panel = {
         backgroundColorRect__ = {
