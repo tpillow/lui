@@ -189,6 +189,7 @@ end
 
 -- Input helpers
 
+-- TODO: something isn't lining up globally or locally with margins/padding/stuff
 function Pane:globalCoordToLocal(x, y)
     if self.parent then
         x, y = self.parent:globalCoordToLocal(x, y)

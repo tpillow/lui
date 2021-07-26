@@ -3,10 +3,10 @@ local Color = require("lui.util.Color")
 
 local style = {}
 
-local cBackground = Color.newFrom(1, 0, 0, 1)--"#121212")
-local cPanel = Color.newFrom(1, 1, 0, 1)--"#5E5E5E")
-local cPrimary = Color.newFrom(0, 1, 0, 1)--"#E1E1E1")
-local cSecondary = Color.newFrom(0, 0, 1, 1)--"#BE84FC")
+local cBackground = Color.newFrom("#121212")
+local cPanel = Color.newFrom("#5E5E5E")
+local cPrimary = Color.newFrom("#E1E1E1")
+local cSecondary = Color.newFrom("#BE84FC")
 local cTransparent = Color.newFrom(1, 1, 1, 0)
 
 -- Can be a property: propertyName = value
@@ -20,8 +20,9 @@ style.defaultStyles = {
     
     Container = {},
     StackContainer = {},
-    HStackContainer = {},
-    StackContainer = {},
+    HStackContainer = {
+        vAlign = utils.VAlign.Center,
+    },
 
     Panel = {
         backgroundColorRect__ = {
@@ -31,12 +32,27 @@ style.defaultStyles = {
             lineWidth = 3,
             cornerRadius = 0,
         },
-        padding = { 5, 5, 5, 5 },
     },
     
 
-    Window = {},
-    MenuBar = {},
+    Window = {
+        panel__ = {
+            backgroundColorRect__cornerRadius = 5,
+            padding = { 10, 10, 10, 10 },
+        },
+        titleBarPanel__ = {
+            backgroundColorRect__ = {
+                lineWidth = 0,
+            },
+        },
+    },
+    MenuBar = {
+        panel__ = {
+            backgroundColorRect__ = {
+                lineWidth = 1,
+            },
+        },
+    },
 
     Label = {
         color = cPrimary,

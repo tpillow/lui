@@ -5,8 +5,6 @@ local Pane = require("lui.Pane")
 local Container = utils.class(Pane)
 
 function Container:init()
-    self.containerDoSelfSetDesires = true
-    
     self:setChild(nil)
 
     style.applyStyle(self, "Container")
@@ -28,11 +26,6 @@ end
 
 function Container:widgetSetDesires()
     self.child:widgetSetDesires()
-
-    if self.containerDoSelfSetDesires then
-        self.width = self.child:getFullWidth()
-        self.height = self.child:getFullHeight()
-    end
 end
 
 function Container:widgetSetReal()
