@@ -27,7 +27,7 @@ lui.Color = require("lui.util.Color")
 luiDebugColor = lui.Color.newFrom(1, 0, 0, 1)
 luiDebugMarginColor = lui.Color.newFrom(1, 1, 0, 1)
 luiDebugLineWidth = 1
-luiDebugBounds = false
+luiDebugBounds = false 
 
 -- Return module
 return lui

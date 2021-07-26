@@ -160,9 +160,9 @@ end
 
 -- Debug functions
 
-function Pane:drawDebugBounds()
+function Pane:drawDebugBounds(force)
     -- Debug draw bounds
-    if luiDebugBounds then
+    if luiDebugBounds or force then
         local _, _, fw, fh = self:getFullBounds()
         local oldLineWidth = love.graphics.getLineWidth()
         love.graphics.setLineWidth(luiDebugLineWidth)
@@ -189,12 +189,11 @@ end
 
 -- Input helpers
 
--- TODO: something isn't lining up globally or locally with margins/padding/stuff
 function Pane:globalCoordToLocal(x, y)
     if self.parent then
         x, y = self.parent:globalCoordToLocal(x, y)
     end
-    return x - self.x + self:getMarginLeft(), y - self.y + self:getMarginTop()
+    return x - self.x - self:getMarginLeft(), y - self.y - self:getMarginTop()
 end
 
 function Pane:globalCoordInBounds(x, y)
@@ -202,8 +201,7 @@ function Pane:globalCoordInBounds(x, y)
 end
 
 function Pane:localCoordInBounds(x, y)
-    local _, _, fw, fh = self:getFullBounds()
-    return x >= 0 and y >= 0 and x < fw and y < fh
+    return x >= 0 and y >= 0 and x < self.width and y < self.height
 end
 
 -- Input methods
