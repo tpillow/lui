@@ -20,15 +20,17 @@ function Window:init()
     self.titleLabel = Label:new()
     self.titleBarPanel:setContent(self.titleLabel)
 
-    self.windowContentContainer = Container:new()
-
-    -- TODO: resizable
     self.menuBar = nil
+    self.windowContentContainer = Container:new()
+    self.resizeHandle = Label:new() -- TODO: Make this an icon
+    self.resizeHandle.text = "█"
+
     self.showTitleBar = true
     self.alwaysOnBottom = false
     self.alwaysFullScreen = false
     self.canDrag = true
     self.dragging = false
+    self.resizable = true
     
     self.mainGrid = Grid:new()
     self.panel:setContent(self.mainGrid)
@@ -55,6 +57,12 @@ function Window:widgetBuild()
 
     self.mainGrid:row():rowHeight("1*"):
         col(self.windowContentContainer):colWidth("1*")
+
+    if self.resizable and not self.alwaysFullScreen then
+        self.mainGrid:row():
+            col():colWidth("1*"):
+            col(self.resizeHandle)
+    end
 
     self.panel:widgetBuild()
 end
@@ -104,6 +112,10 @@ function Window:mousepressed(x, y, button, istouch, presses)
         if self.canDrag and self.titleBarPanel:globalCoordInBounds(x, y) then
             self.dragging = true        
             return true
+        elseif self.resizable and not self.alwaysFullScreen and
+            self.resizeHandle:globalCoordInBounds(x, y) then
+            self.resizing = true
+            return true
         end
     end
     return self:paneMousepressed(x, y, button, istouch, presses)
@@ -113,6 +125,9 @@ function Window:mousemoved(x, y, dx, dy, istouch)
     if self.dragging then
         self:setPosition(self.x + dx, self.y + dy)
         return true
+    elseif self.resizing then
+        self:setSize(self.width + dx, self.height + dy)
+        return true
     end
     return self:paneMousemoved(x, y, dx, dy, istouch)
 end
@@ -120,6 +135,9 @@ end
 function Window:mousereleased(x, y, button, istouch, presses)
     if self.dragging then
         self.dragging = false
+        return true
+    elseif self.resizing then
+        self.resizing = false
         return true
     end
     return self:paneMousereleased(x, y, button, istouch, presses)

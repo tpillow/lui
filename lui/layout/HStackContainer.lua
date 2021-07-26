@@ -83,7 +83,7 @@ end
 
 function HStackContainer:widgetSetDesires()
     self.mainGrid:widgetSetDesires()
-    -- TODO: Needed?
+    
     self:setSize(self.mainGrid:getFullWidth(), self.mainGrid:getFullHeight())
 end
 
