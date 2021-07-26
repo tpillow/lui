@@ -2,9 +2,10 @@ local utils = require("lui.util.utils")
 local style = require("lui.util.style")
 local HStackContainer = require("lui.layout.HStackContainer")
 local Panel = require("lui.widget.Panel")
+local Pane = require("lui.Pane")
 local Label = require("lui.widget.Label")
 
-local MenuBar = utils.class(Panel)
+local MenuBar = utils.class(Pane)
 
 -- TODO: redo whole menu system to better allow for customization / submenus
 -- TODO: keyboard shortcut integration
@@ -13,13 +14,13 @@ local MenuBar = utils.class(Panel)
 function MenuBar:init()
     self.menus = {}
 
+    self.panel = Panel:new()
     self.hStackContainer = HStackContainer:new()
-    self:setContent(self.hStackContainer)
+    self.panel:setContent(self.hStackContainer)
 
     style.applyStyle(self, "MenuBar")
 end
 
-local superWidgetBuild = MenuBar.widgetBuild
 function MenuBar:widgetBuild()
     self.hStackContainer:resetHStackContainer()
 
@@ -31,7 +32,30 @@ function MenuBar:widgetBuild()
         self.hStackContainer:pushChild(tmp)
     end
 
-    superWidgetBuild(self)
+    self.panel:widgetBuild()
+end
+
+function MenuBar:widgetUpdate(dt)
+    self.panel:widgetUpdate(dt)
+end
+
+function MenuBar:widgetDraw()
+    self.panel:draw()
+
+    self:drawDebugBounds()
+end
+
+function MenuBar:widgetSetDesires()
+    self.panel:widgetSetDesires()
+
+    self:setSize(self.panel:getFullWidth(), self.panel:getFullHeight())
+end
+
+function MenuBar:widgetSetReal()
+    self:ensureMinMaxSize()
+
+    self.panel:setSizeIncludesMargin(self.width, self.height)
+    self.panel:widgetSetReal()
 end
 
 -- Menu building helpers

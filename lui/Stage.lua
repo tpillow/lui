@@ -34,17 +34,17 @@ end
 -- Helpers
 
 function Stage:moveToFront(child)
-    --local idx = utils.findInList(self.children, child)
-    --assert(idx > 0)
-    --table.remove(self.children, idx)
-    --table.insert(self.children, child)
+    local idx = utils.findInList(self.children, child)
+    assert(idx > 0)
+    table.remove(self.children, idx)
+    table.insert(self.children, child)
 end
 
 function Stage:moveToBack(child)
-    --local idx = utils.findInList(self.children, child)
-    --assert(idx > 0)
-    --table.remove(self.children, idx)
-    --table.insert(self.children, 1, child)
+    local idx = utils.findInList(self.children, child)
+    assert(idx > 0)
+    table.remove(self.children, idx)
+    table.insert(self.children, 1, child)
 end
 
 -- Input functions
@@ -111,7 +111,6 @@ end
 -- Children functions
 
 function Stage:addChild(child)
-    assert(utils.instanceOf(child, Window))
     table.insert(self.children, child)
     -- TODO: if this property is changed, it's not updated here in the stage
     if child.alwaysOnBottom then self:moveToBack(child) end

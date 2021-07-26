@@ -19,6 +19,7 @@ function Grid:resetGrid()
         for _, row in ipairs(self.gridRows) do
             for _, col in ipairs(row.cols) do
                 col.content.parent = nil
+                self:removeInputListener(col.content)
             end
         end
     end
@@ -277,8 +278,15 @@ function Grid:colWidth(spec)
 end
 
 function Grid:colContent(content)
-    assert(utils.instanceOf(content, Pane))
-    self:getCurGridCol().content = content
+    assert(content)
+    local curCol = self:getCurGridCol()
+    if curCol.content then
+        curCol.parent = nil
+        self:removeInputListener(curCol.content)
+    end
+
+    curCol.content = content
+    self:addInputListener(content)
     content.parent = self
     return self
 end
@@ -331,71 +339,6 @@ end
 function Grid:colVFitMode(mode)
     self:getCurGridCol().vFitMode = mode
     return self
-end
-
--- Input functions
-
-function Grid:mousepressed(x, y, button, istouch, presses)
-    for _, row in ipairs(self.gridRows) do
-        for _, col in ipairs(row.cols) do
-            if col.content:mousepressed(x, y, button, istouch, presses) then return true end
-        end
-    end
-    return false
-end
-
-function Grid:mousereleased(x, y, button, istouch, presses)
-    for _, row in ipairs(self.gridRows) do
-        for _, col in ipairs(row.cols) do
-            if col.content:mousereleased(x, y, button, istouch, presses) then return true end
-        end
-    end
-    return false
-end
-
-function Grid:mousemoved(x, y, dx, dy, istouch)
-    for _, row in ipairs(self.gridRows) do
-        for _, col in ipairs(row.cols) do
-            if col.content:mousemoved(x, y, dx, dy, istouch) then return true end
-        end
-    end
-    return false
-end
-
-function Grid:wheelmoved(x, y)
-    for _, row in ipairs(self.gridRows) do
-        for _, col in ipairs(row.cols) do
-            if col.content:wheelmoved(x, y) then return true end
-        end
-    end
-    return false
-end
-
-function Grid:keypressed(key, scancode, isrepeat)
-    for _, row in ipairs(self.gridRows) do
-        for _, col in ipairs(row.cols) do
-            if col.content:keypressed(key, scancode, isrepeat) then return true end
-        end
-    end
-    return false
-end
-
-function Grid:keyreleased(key, scancode)
-    for _, row in ipairs(self.gridRows) do
-        for _, col in ipairs(row.cols) do
-            if col.content:keyreleased(key, scancode) then return true end
-        end
-    end
-    return false
-end
-
-function Grid:textinput(text)
-    for _, row in ipairs(self.gridRows) do
-        for _, col in ipairs(row.cols) do
-            if col.content:textinput(text) then return true end
-        end
-    end
-    return false
 end
 
 -- Return class

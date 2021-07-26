@@ -42,46 +42,21 @@ function Container:widgetSetReal()
     self.child:widgetSetReal()
 end
 
+-- Container child methods
+
 function Container:setChild(child)
-    if self.child then self.child.parent = nil end
+    if self.child then
+        self.child.parent = nil
+        self:removeInputListener(self.child)
+    end
     self.child = child or Pane:new()
-    assert(utils.instanceOf(self.child, Pane))
     self.child.parent = self
+    self:addInputListener(self.child)
     self:widgetBuild()
 end
 
 function Container:getChild()
     return self.child
-end
-
--- Input methods
-
-function Container:mousepressed(x, y, button, istouch, presses)
-    return self.child:mousepressed(x, y, button, istouch, presses)
-end
-
-function Container:mousereleased(x, y, button, istouch, presses)
-    return self.child:mousereleased(x, y, button, istouch, presses)
-end
-
-function Container:mousemoved(x, y, dx, dy, istouch)
-    return self.child:mousemoved(x, y, dx, dy, istouch)
-end
-
-function Container:wheelmoved(x, y)
-    return self.child:wheelmoved(x, y)
-end
-
-function Container:keypressed(key, scancode, isrepeat)
-    return self.child:keypressed(key, scancode, isrepeat)
-end
-
-function Container:keyreleased(key, scancode)
-    return self.child:keyreleased(key, scancode)
-end
-
-function Container:textinput(text)
-    return self.child:textinput(text)
 end
 
 return Container

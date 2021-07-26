@@ -34,6 +34,4 @@ function Canvas:widgetDraw()
     self:drawDebugBounds()
 end
 
-function Canvas:setDrawFunc(func) self.drawFunc = func end
-
 return Canvas

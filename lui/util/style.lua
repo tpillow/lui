@@ -14,38 +14,39 @@ local cTransparent = Color.newFrom(1, 1, 1, 0)
 -- Can be many properties of another property: propertyName__ = { prop: val, ... }
 -- A property cannot be nil here, as an assertion will be thrown to help catch typos
 style.defaultStyles = {
-    -- Everything here should extend from Pane
     Pane = {},
-        -- Children of layouts
-        Container = {},
-            HStackContainer = {},
-            Panel = {
-                backgroundColorRect__ = {
-                    lineColor = cPanel,
-                    fillColor = cBackground,
-                    drawMode = utils.DrawMode.FillOutline,
-                    lineWidth = 3,
-                    cornerRadius = 0,
-                },
-                padding = { 5, 5, 5, 5 },
-            },
-                Window = {},
-                MenuBar = {},
+    
+    Grid = {},
+    
+    Container = {},
+    StackContainer = {},
+    HStackContainer = {},
+    StackContainer = {},
 
-        StackContainer = {},
-
-        Grid = {},
-
-        -- Standalone Widgets
-        Label = {
-            color = cPrimary,
-            backgroundColor = cTransparent,
+    Panel = {
+        backgroundColorRect__ = {
+            lineColor = cPanel,
+            fillColor = cBackground,
+            drawMode = utils.DrawMode.FillOutline,
+            lineWidth = 3,
+            cornerRadius = 0,
         },
-        ColorRect = {
-            fillColor = cPanel,
-            drawMode = utils.DrawMode.Fill,
-        },
-        Canvas = {},
+        padding = { 5, 5, 5, 5 },
+    },
+    
+
+    Window = {},
+    MenuBar = {},
+
+    Label = {
+        color = cPrimary,
+        backgroundColor = cTransparent,
+    },
+    ColorRect = {
+        fillColor = cPanel,
+        drawMode = utils.DrawMode.Fill,
+    },
+    Canvas = {},
 }
 
 function style.getDefaultStyle(key)

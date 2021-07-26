@@ -20,6 +20,8 @@ function Pane:init()
     self.maxWidth = 2^31
     self.maxHeight = 2^31
 
+    self.inputListeners = {}
+
     self.visible = true
 
     style.applyStyle(self, "Pane")
@@ -77,7 +79,6 @@ function Pane:getMarginLeft() return self.margin[utils.MPIdx.Left] end
 function Pane:getMarginTop() return self.margin[utils.MPIdx.Top] end
 function Pane:getMarginRight() return self.margin[utils.MPIdx.Right] end
 function Pane:getMarginBottom() return self.margin[utils.MPIdx.Bottom] end
-
 
 -- Etc helpers
 
@@ -174,6 +175,18 @@ function Pane:drawDebugBounds()
     end
 end
 
+-- Input listener helper
+
+function Pane:addInputListener(listener)
+    table.insert(self.inputListeners, listener)
+end
+
+function Pane:removeInputListener(listener)
+    local idx = utils.findInList(self.inputListeners, listener)
+    assert(idx > 0, "Pane:removeInputListener: could not find listener")
+    table.remove(self.inputListeners, idx)
+end
+
 -- Input helpers
 
 function Pane:globalCoordToLocal(x, y)
@@ -188,38 +201,87 @@ function Pane:globalCoordInBounds(x, y)
 end
 
 function Pane:localCoordInBounds(x, y)
-    local _, _, fw, fh = self:getBounds()
+    local _, _, fw, fh = self:getFullBounds()
     return x >= 0 and y >= 0 and x < fw and y < fh
 end
 
 -- Input methods
 
-function Pane:mousepressed(x, y, button, istouch, presses)
+function Pane:paneMousepressed(x, y, button, istouch, presses)
+    for _, child in ipairs(self.inputListeners) do
+        if child:mousepressed(x, y, button, istouch, presses) then return true end
+    end
     return false
+end
+
+function Pane:paneMousereleased(x, y, button, istouch, presses)
+    for _, child in ipairs(self.inputListeners) do
+        if child:mousereleased(x, y, button, istouch, presses) then return true end
+    end
+    return false
+end
+
+function Pane:paneMousemoved(x, y, dx, dy, istouch)
+    for _, child in ipairs(self.inputListeners) do
+        if child:mousemoved(x, y, dx, dy, istouch) then return true end
+    end
+    return false
+end
+
+function Pane:paneWheelmoved(x, y)
+    for _, child in ipairs(self.inputListeners) do
+        if child:wheelmoved(x, y) then return true end
+    end
+    return false
+end
+
+function Pane:paneKeypressed(key, scancode, isrepeat)
+    for _, child in ipairs(self.inputListeners) do
+        if child:keypressed(key, scancode, isrepeat) then return true end
+    end
+    return false
+end
+
+function Pane:paneKeyreleased(key, scancode)
+    for _, child in ipairs(self.inputListeners) do
+        if child:keyreleased(key, scancode) then return true end
+    end
+    return false
+end
+
+function Pane:paneTextinput(text)
+    for _, child in ipairs(self.inputListeners) do
+        if child:textinput(text) then return true end
+    end
+    return false
+end
+
+function Pane:mousepressed(x, y, button, istouch, presses)
+    return self:paneMousepressed(x, y, button, istouch, presses)
 end
 
 function Pane:mousereleased(x, y, button, istouch, presses)
-    return false
+    return self:paneMousereleased(x, y, button, istouch, presses)
 end
 
 function Pane:mousemoved(x, y, dx, dy, istouch)
-    return false
+    return self:paneMousemoved(x, y, dx, dy, istouch)
 end
 
 function Pane:wheelmoved(x, y)
-    return false
+    return self:paneWheelmoved(x, y)
 end
 
 function Pane:keypressed(key, scancode, isrepeat)
-    return false
+    return self:paneKeypressed(key, scancode, isrepeat)
 end
 
 function Pane:keyreleased(key, scancode)
-    return false
+    return self:paneKeyreleased(key, scancode)
 end
 
 function Pane:textinput(text)
-    return false
+    return self:paneTextinput(text)
 end
 
 -- Return class

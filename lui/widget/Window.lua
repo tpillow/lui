@@ -5,11 +5,15 @@ local Label = require("lui.widget.Label")
 local Container = require("lui.layout.Container")
 local MenuBar = require("lui.widget.MenuBar")
 local Panel = require("lui.widget.Panel")
+local Pane = require("lui.Pane")
 
-local Window = utils.class(Panel)
+local Window = utils.class(Pane)
 
 function Window:init()
     self.title = "Untitled"
+
+    self.panel = Panel:new()
+    self:addInputListener(self.panel)
 
     self.titleBarPanel = Panel:new()
     self.titleLabel = Label:new()
@@ -26,19 +30,15 @@ function Window:init()
     self.dragging = false
     
     self.mainGrid = Grid:new()
-    self:setContent(self.mainGrid)
+    self.panel:setContent(self.mainGrid)
 
     self:setMinSize(100, 100)
-    self.containerDoSelfSetDesires = false
-
     self:setWindowContent(nil)
     
     style.applyStyle(self, "Window")
 end
 
-local superWidgetBuild = Window.widgetBuild
 function Window:widgetBuild()
-    print("Window:widgetBuild()", self, self.mainGrid, self.windowContentContainer)
     self.mainGrid:resetGrid()
 
     if self.showTitleBar then
@@ -48,7 +48,6 @@ function Window:widgetBuild()
     end
 
     if self.menuBar then
-        assert(utils.instanceOf(self.menuBar, MenuBar))
         self.mainGrid:row():
             col(self.menuBar):colWidth("1*")
     end
@@ -56,19 +55,40 @@ function Window:widgetBuild()
     self.mainGrid:row():rowHeight("1*"):
         col(self.windowContentContainer):colWidth("1*")
 
-    superWidgetBuild(self)
+    self.panel:widgetBuild()
 end
 
-local superWidgetSetDesires = Window.widgetSetDesires
-function Window:widgetSetDesires()
-    superWidgetSetDesires(self)
+function Window:widgetUpdate(dt)
+    self.panel:widgetUpdate(dt)
+end
 
+function Window:widgetDraw()
+    self.panel:draw()
+
+    self:drawDebugBounds()
+end
+
+function Window:widgetSetDesires()
+    self.panel:widgetSetDesires()
+
+    -- TODO: the no set desires thing...maybe this is fine?
+    -- self:setSize(self.panel:getFullWidth(), self.panel:getFullHeight())
+    
     if self.alwaysFullScreen then
         self:setPosition(0, 0)
         self:setSizeIncludesMargin(love.graphics.getWidth(),
                                    love.graphics.getHeight())
     end
 end
+
+function Window:widgetSetReal()
+    self:ensureMinMaxSize()
+
+    self.panel:setSizeIncludesMargin(self.width, self.height)
+    self.panel:widgetSetReal()
+end
+
+-- Window content helpers
 
 function Window:setWindowContent(content)
     self.windowContentContainer:setChild(content)
@@ -80,7 +100,6 @@ end
 
 -- Window moving
 
-local superMousepressed = Window.mousepressed
 function Window:mousepressed(x, y, button, istouch, presses)
     if self:globalCoordInBounds(x, y) then
         if self.canDrag and self.titleBarPanel:globalCoordInBounds(x, y) then
@@ -88,25 +107,23 @@ function Window:mousepressed(x, y, button, istouch, presses)
             return true
         end
     end
-    return superMousepressed(self, x, y, button, istouch, presses)
+    return self:paneMousepressed(x, y, button, istouch, presses)
 end
 
-local superMousemoved = Window.mousemoved
 function Window:mousemoved(x, y, dx, dy, istouch)
     if self.dragging then
         self:setPosition(self.x + dx, self.y + dy)
         return true
     end
-    return superMousemoved(self, x, y, dx, dy, istouch)
+    return self:paneMousemoved(x, y, dx, dy, istouch)
 end
 
-local superMousereleased = Window.mousereleased
 function Window:mousereleased(x, y, button, istouch, presses)
     if self.dragging then
         self.dragging = false
         return true
     end
-    return superMousereleased(self, x, y, button, istouch, presses)
+    return self:paneMousereleased(x, y, button, istouch, presses)
 end
 
 return Window

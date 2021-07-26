@@ -5,8 +5,6 @@ local Color = require("lui.util.Color")
 
 local ColorRect = utils.class(Pane)
 
--- TODO: May have to override getFullWidth/Height to include line width?
-
 function ColorRect:init()
     self.lineColor = Color:new()
     self.fillColor = Color:new()

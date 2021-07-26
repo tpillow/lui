@@ -129,60 +129,21 @@ function utils.clamp(val, min, max)
     return val
 end
 
--- Random functions
-
-function utils.randRGBA()
-    return math.random(), math.random(), math.random(), math.random()
-end
-
--- Class system
+-- Class helper
 
 function utils.class(Base)
-    Base = Base or utils.Object or nil
     local Class = {}
     if Base then Class = Base:new() end
-
-    Class.Class = Class
-    Class.Base = Base
 
     function Class:new()
         local obj = {}
         setmetatable(obj, self)
         self.__index = self
-        obj.Class = Class
-        obj.Base = Base
         obj:init()
         return obj
     end
 
     return Class
-end
-
--- Object class
-
-utils.Object = utils.class(nil)
-
-function utils.Object:init()
-end
-
--- Class helpers
-
-function utils.instanceOf(obj, Class)
-    if obj == nil or Class == nil then return false end
-    if obj.Class == Class then return true end
-    if obj.Base then return utils.instanceOf(obj.Base, Class) end
-    return false
-end
-
-function utils.getClassHierarchy(obj)
-    assert(obj and utils.instanceOf(obj, utils.Object))
-    local ret = {}
-    local Class = obj.Class
-    while Class do
-        table.insert(ret, Class)
-        Class = Class.Base
-    end
-    return ret
 end
 
 return utils
