@@ -1,4 +1,4 @@
-# Lui
+# Lui (NO LONGER IN DEVELOPMENT)
 
 A minimalistic Love2D GUI library, written entirely in Love2D.
 
